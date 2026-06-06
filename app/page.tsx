@@ -3,7 +3,6 @@ import Link from 'next/link';
 export default function HomePage() {
 return ( <main className="max-w-5xl mx-auto px-8 py-12 space-y-16">
 
-```
   <header className="border-b border-neutral-200 pb-8">
     <div className="flex justify-between items-center mb-10">
       <div>
@@ -128,7 +127,6 @@ return ( <main className="max-w-5xl mx-auto px-8 py-12 space-y-16">
   </footer>
 
 </main>
-```
 
 );
 }
