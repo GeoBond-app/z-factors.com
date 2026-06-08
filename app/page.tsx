@@ -15,9 +15,12 @@ return ( <main className="max-w-5xl mx-auto px-8 py-12 space-y-16">
       </div>
 
       <nav className="space-x-6 text-sm">
-        <Link href="/">Home</Link>
-        <Link href="/archive">Archive</Link>
-      </nav>
+  <Link href="/">Home</Link>
+  <Link href="/archive">Archive</Link>
+  <Link href="/about">About</Link>
+  <Link href="/contact">Contact</Link>
+  <Link href="/privacy">Privacy</Link>
+</nav>
     </div>
 
     <p className="text-xl text-neutral-700 max-w-2xl">
