@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function AboutPage() {
   return (
-    <article className="space-y-10 max-w-2xl mx-auto px-8 py-12 text-neutral-800 leading-relaxed">
+    <article className="min-h-screen bg-white text-neutral-950 space-y-10 max-w-2xl mx-auto px-8 py-12 leading-relaxed">
       <header className="space-y-4 border-b border-neutral-200 pb-6">
         <div className="text-xs text-neutral-400">
           <Link href="/" className="hover:text-neutral-700">
@@ -37,7 +37,7 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section className="space-y-3 bg-neutral-50 p-6 border-l border-neutral-900 rounded-r">
+        <section className="space-y-3 bg-neutral-100 p-6 border-l border-neutral-900 rounded-r">
           <h2 className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">
             Human Reality Lens
           </h2>
