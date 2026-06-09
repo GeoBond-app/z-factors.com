@@ -24,3 +24,22 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Track A readability fix */
+html,
+body {
+  background: #fafafa;
+  color: #171717;
+}
+
+article,
+main {
+  background: #fafafa;
+}
+
+p,
+li,
+span,
+div {
+  color: inherit;
+}
