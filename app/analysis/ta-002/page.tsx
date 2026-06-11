@@ -27,24 +27,39 @@ export default function TA002() {
         </div>
       </header>
 
-      <section className="space-y-6 text-neutral-800 leading-relaxed">
+      <section className="space-y-5">
+        <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#1D9E75'}}></div>
+          <div>
+            <div className="text-sm font-semibold">The real story.</div>
+            <div className="text-xs text-neutral-400 italic">What really happened.</div>
+          </div>
+        </div>
+        <div className="space-y-4 text-neutral-800 leading-relaxed">
         <p>A global headline screams, &apos;Global inflation pressures intensify as Iran war drives fresh surge in energy prices.&apos; The conflict, particularly impacting the critical Strait of Hormuz, has caused oil prices to jump by approximately 50%, contributing an estimated two percentage points to global inflation. About one-fifth of global oil and gas supply has been disrupted due to shipping halts, sending shockwaves through the market. In the U.S. alone, inflation hit 4.2% year-over-year in May, with energy costs increasing nearly 20% since February, mirroring a grim reality for economies worldwide.</p>
         <p>For everyday people, this isn&apos;t just a number; it&apos;s a tangible, painful increase in the cost of simply living. Gasoline prices, already a significant household expense, continue their relentless climb. Grocery bills are swelling, making fresh food a luxury for many. Utility payments necessary for heating and cooling homes are becoming increasingly burdensome. This surge acts as a &apos;large sudden tax on income,&apos; directly eroding purchasing power and forcing families to make difficult choices between necessities. Beyond the wallet, the conflict carries a devastating human toll, with over 1,000 Iranian civilians, including many schoolchildren, reported killed, alongside seven U.S. military service members. This is not just an economic crisis, but a profound human tragedy.</p>
         <p>Within communities, the ripple effects are stark. Higher energy and food prices exacerbate existing social inequalities, disproportionately burdening vulnerable households and low-income nations already on the brink. Discussions in local forums quickly turn to economic hardship, the effectiveness of government policies, and the profound human cost of the conflict. Calls for humanitarian aid and support for affected populations grow louder, and the specter of protests against rising costs or the war itself becomes a more immediate concern. In places like the Bay Area, residents are seeing gas prices jump by 48 cents per gallon overnight, further straining budgets and impacting local businesses that face increased operational costs.</p>
         <p>The Z-Factor reveals that while the immediate narrative focuses on the generalized &apos;global inflation shock,&apos; the deeper, counter-intuitive truth is that this crisis acts as a profoundly regressive tax, disproportionately punishing the poorest segments of societies worldwide. It is framed as an economic shock, yet it functions as a mechanism that funnels wealth upwards and outwards. Simultaneously, this instability bolsters the geopolitical power and economic leverage of energy-producing nations, many of whom are not directly involved in the conflict but benefit immensely from the escalating prices. The narrative of &apos;global inflation&apos; often obscures this unequal distribution of economic pain and strategic advantage, presenting a collective burden when it is, in fact, a deeply unequal one.</p>
+      </div>
       </section>
 
-      <section className="border-l-4 border-black pl-6 py-2 space-y-3">
-        <div className="text-xs uppercase tracking-widest text-neutral-500">
-          Z-Factor Interpretation
+      <section className="space-y-5">
+        <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#BA7517'}}></div>
+          <div>
+            <div className="text-sm font-semibold">The real response.</div>
+            <div className="text-xs text-neutral-400 italic">What we can do together.</div>
+          </div>
         </div>
+        <div className="border-l-4 pl-5 py-2" style={{borderColor:'#BA7517'}}>
         <p className="text-lg leading-relaxed">
           The global inflation surge driven by the Iran war is not just an economic shock; it&apos;s a regressive tax on the poorest, disproportionately impacting vulnerable populations while simultaneously benefiting non-combatant energy producers, a reality often hidden by general &apos;inflation&apos; narratives.
         </p>
+        </div>
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Signal Score: 7/10</h2>
+      <section className="bg-neutral-50 rounded-lg p-5 space-y-2">
+        <div className="flex items-center gap-2"><span className="text-xs font-semibold uppercase tracking-widest text-neutral-500">Signal Score</span><span className="text-sm font-bold" style={{color:'#1D9E75'}}>Score: 7/10</h2>
         <p className="text-neutral-600">Understand the true distribution of economic pain and strategic advantage in global conflicts. Advocate for policies that protect vulnerable populations during crises and question narratives that treat all economic burdens as equally shared.</p>
         <p className="text-sm text-neutral-500">Key entities: Iran war, Strait of Hormuz, global inflation, energy prices, oil prices, gas prices, U.S. inflation, Iranian civilians, U.S. military service members, low-income countries, energy-producing nations</p>
       </section>

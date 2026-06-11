@@ -25,7 +25,15 @@ export default function TA001() {
         </p>
       </header>
 
-      <section className="space-y-6 text-neutral-800 leading-relaxed">
+      <section className="space-y-5">
+        <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#1D9E75'}}></div>
+          <div>
+            <div className="text-sm font-semibold">The real story.</div>
+            <div className="text-xs text-neutral-400 italic">What really happened.</div>
+          </div>
+        </div>
+        <div className="space-y-4 text-neutral-800 leading-relaxed">
         <h2 className="text-xl font-semibold">What Happened</h2>
         <p>
           State Farm, Allstate, and several other major insurance carriers have
@@ -43,7 +51,15 @@ export default function TA001() {
         </p>
       </section>
 
-      <section className="space-y-6 text-neutral-800 leading-relaxed">
+      <section className="space-y-5">
+        <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#1D9E75'}}></div>
+          <div>
+            <div className="text-sm font-semibold">The real story.</div>
+            <div className="text-xs text-neutral-400 italic">What really happened.</div>
+          </div>
+        </div>
+        <div className="space-y-4 text-neutral-800 leading-relaxed">
         <h2 className="text-xl font-semibold">How People Are Carrying It</h2>
         <p>
           Homeowners in fire-adjacent communities are facing annual premium
@@ -58,12 +74,18 @@ export default function TA001() {
           Communities that were already economically stressed are now facing
           an additional structural pressure that compounds every other challenge.
         </p>
+      </div>
       </section>
 
-      <section className="border-l-4 border-black pl-6 py-2 space-y-3">
-        <div className="text-xs uppercase tracking-widest text-neutral-500">
-          Z-Factor Interpretation
+      <section className="space-y-5">
+        <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#BA7517'}}></div>
+          <div>
+            <div className="text-sm font-semibold">The real response.</div>
+            <div className="text-xs text-neutral-400 italic">What we can do together.</div>
+          </div>
         </div>
+        <div className="border-l-4 pl-5 py-2" style={{borderColor:'#BA7517'}}>
         <p className="text-lg leading-relaxed">
           The insurance crisis is not only about wildfire risk. It exposes
           the gap between individual responsibility and institutional risk
@@ -75,7 +97,7 @@ export default function TA001() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Signal Score: 9/10</h2>
+        <div className="flex items-center gap-2"><span className="text-xs font-semibold uppercase tracking-widest text-neutral-500">Signal Score</span><span className="text-sm font-bold" style={{color:'#1D9E75'}}>Score: 9/10</h2>
         <p className="text-neutral-600">
           High community intelligence value. Affects housing stability,
           economic security, and long-term community resilience across
