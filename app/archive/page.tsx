@@ -60,7 +60,7 @@ export default function ArchivePage() {
 
       <header style={{padding:'36px 24px 28px',borderBottom:'0.5px solid #e5e5e5'}}>
         <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'10px'}}>Complete Index</div>
-        <h1 style={{fontSize:'28px',fontWeight:'500',letterSpacing:'-0.4px',marginBottom:'8px',fontFamily:'Georgia,Cambria,serif',fontWeight:'400'}}>Archive</h1>
+        <h1 style={{fontSize:'28px',fontFamily:'Georgia,Cambria,serif',fontWeight:'400',letterSpacing:'-0.4px',marginBottom:'8px'}}>Archive</h1>
         <p style={{fontSize:'14px',color:'#737373',lineHeight:'1.6',maxWidth:'480px'}}>
           All intelligence · chronological · filterable by lens.
         </p>
