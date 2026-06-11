@@ -29,7 +29,7 @@ export default function TA002() {
 
       <section className="space-y-5">
         <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
-          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#1D9E75'}}></div>
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:"#1D9E75"}}></div>
           <div>
             <div className="text-sm font-semibold">The real story.</div>
             <div className="text-xs text-neutral-400 italic">What really happened.</div>
@@ -45,13 +45,13 @@ export default function TA002() {
 
       <section className="space-y-5">
         <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
-          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:'#BA7517'}}></div>
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{background:"#BA7517"}}></div>
           <div>
             <div className="text-sm font-semibold">The real response.</div>
             <div className="text-xs text-neutral-400 italic">What we can do together.</div>
           </div>
         </div>
-        <div className="border-l-4 pl-5 py-2" style={{borderColor:'#BA7517'}}>
+        <div className="border-l-4 pl-5 py-2" style={{borderColor:"#BA7517"}}>
         <p className="text-lg leading-relaxed">
           The global inflation surge driven by the Iran war is not just an economic shock; it&apos;s a regressive tax on the poorest, disproportionately impacting vulnerable populations while simultaneously benefiting non-combatant energy producers, a reality often hidden by general &apos;inflation&apos; narratives.
         </p>
@@ -59,8 +59,8 @@ export default function TA002() {
       </section>
 
       <section className="bg-neutral-50 rounded-lg p-5 space-y-2">
-        <div className="flex items-center gap-2"><span className="text-xs font-semibold uppercase tracking-widest text-neutral-500">Signal Score</span><span className="text-sm font-bold" style={{color:'#1D9E75'}}>Score: 7/10</h2>
-        <p className="text-neutral-600">Understand the true distribution of economic pain and strategic advantage in global conflicts. Advocate for policies that protect vulnerable populations during crises and question narratives that treat all economic burdens as equally shared.</p>
+        <div className="flex items-center gap-2"><span className="text-xs font-semibold uppercase tracking-widest text-neutral-500">Signal Score</span><span className="text-sm font-bold" style={{color:"#1D9E75"}}> 7/10</span></div>
+        <p className="text-sm text-neutral-600">Understand the true distribution of economic pain and strategic advantage in global conflicts. Advocate for policies that protect vulnerable populations during crises and question narratives that treat all economic burdens as equally shared.</p>
         <p className="text-sm text-neutral-500">Key entities: Iran war, Strait of Hormuz, global inflation, energy prices, oil prices, gas prices, U.S. inflation, Iranian civilians, U.S. military service members, low-income countries, energy-producing nations</p>
       </section>
 
