@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Beyond the Gas Pump: The Real Cost of Conflict-Driven Inflation on Human Lives | Z-Factors',
-  description: 'We're told war drives energy costs, but what does that mean for dinner tables and futures?',
+  description: 'We\'re told war drives energy costs, but what does that mean for dinner tables and futures?',
 };
 
 export default function TA005() {

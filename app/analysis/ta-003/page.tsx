@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Beyond the Pump: The Invisible Tax of War and Inflation | Z-Factors',
-  description: 'The 'global inflation shock' isn't just about rising prices; it's a brutal redistribution of suffering and wealth, often disguised by broad economic headlines.',
+  description: 'The \'global inflation shock\' isn\'t just about rising prices; it\'s a brutal redistribution of suffering and wealth, often disguised by broad economic headlines.',
 };
 
 export default function TA003() {
