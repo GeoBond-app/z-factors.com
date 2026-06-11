@@ -43,17 +43,17 @@ export default function HomePage() {
   const smallTown = articles.filter(a => a.type === 'SMALL TOWN').slice(0,1);
 
   return (
-    <main style={{minHeight:'100vh',background:'#fff',color:'#171717',fontFamily:'ui-sans-serif,system-ui,-apple-system,sans-serif'}}>
+    <main style={{minHeight:'100vh',background:'#fff',color:'#0a0a0a',fontFamily:'ui-sans-serif,system-ui,-apple-system,sans-serif'}}>
 
       <nav style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'16px 24px',borderBottom:'0.5px solid #e5e5e5'}}>
         <div>
           <div style={{fontSize:'20px',fontWeight:'500',letterSpacing:'-0.4px'}}>Z-Factors</div>
-          <div style={{fontSize:'10px',letterSpacing:'0.18em',textTransform:'uppercase',color:'#a3a3a3',marginTop:'2px'}}>The real story · The real feeling · The real response</div>
+          <div style={{fontSize:'10px',letterSpacing:'0.18em',textTransform:'uppercase',color:'#737373',marginTop:'2px'}}>The real story · The real feeling · The real response</div>
         </div>
-        <div style={{display:'flex',gap:'20px',fontSize:'13px',color:'#737373'}}>
-          <Link href="/archive" style={{color:'#737373',textDecoration:'none'}}>Archive</Link>
-          <Link href="/about" style={{color:'#737373',textDecoration:'none'}}>About</Link>
-          <Link href="/contact" style={{color:'#737373',textDecoration:'none'}}>Contact</Link>
+        <div style={{display:'flex',gap:'20px',fontSize:'13px',color:'#404040'}}>
+          <Link href="/archive" style={{color:'#404040',textDecoration:'none'}}>Archive</Link>
+          <Link href="/about" style={{color:'#404040',textDecoration:'none'}}>About</Link>
+          <Link href="/contact" style={{color:'#404040',textDecoration:'none'}}>Contact</Link>
         </div>
       </nav>
 
@@ -62,8 +62,8 @@ export default function HomePage() {
           <div key={r.short} style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:'8px',borderRight:i<2?'0.5px solid #e5e5e5':'none'}}>
             <div style={{width:'7px',height:'7px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
             <div>
-              <div style={{fontSize:'11px',fontWeight:'500',color:'#525252'}}>{r.short}</div>
-              <div style={{fontSize:'10px',color:'#a3a3a3'}}>{r.long}</div>
+              <div style={{fontSize:'11px',fontWeight:'500',color:'#262626'}}>{r.short}</div>
+              <div style={{fontSize:'10px',color:'#737373'}}>{r.long}</div>
             </div>
           </div>
         ))}
@@ -74,18 +74,18 @@ export default function HomePage() {
           <div style={{display:'flex',alignItems:'center',gap:'5px',fontSize:'10px',letterSpacing:'0.12em',textTransform:'uppercase',color:'#1D9E75',flexShrink:0}}>
             <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'#1D9E75'}}></div>Live
           </div>
-          <span style={{fontSize:'13px',color:'#737373',flex:1,lineHeight:'1.4'}}>{featured.headline}</span>
+          <span style={{fontSize:'13px',color:'#404040',flex:1,lineHeight:'1.4'}}>{featured.headline}</span>
           <span style={{fontSize:'10px',fontWeight:'500',padding:'2px 8px',background:'#1D9E75',color:'#fff',borderRadius:'3px',flexShrink:0}}>{featured.score}/10</span>
         </div>
       )}
 
       <section style={{padding:'44px 24px 40px',borderBottom:'0.5px solid #e5e5e5',maxWidth:'580px'}}>
-        <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'20px'}}>Community Intelligence · Bay Area + Global</div>
+        <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#737373',marginBottom:'20px'}}>Community Intelligence · Bay Area + Global</div>
         <div style={{display:'flex',flexDirection:'column',gap:'16px',marginBottom:'28px'}}>
           {[R.story,R.feeling,R.response].map(r => (
             <div key={r.short} style={{paddingLeft:'16px',borderLeft:`2px solid ${r.color}`}}>
-              <div style={{fontSize:'18px',fontWeight:'500',fontFamily:'Georgia,Cambria,serif',letterSpacing:'-0.2px'}}>{r.short}</div>
-              <div style={{fontSize:'14px',color:'#737373',fontFamily:'Georgia,Cambria,serif',fontStyle:'italic'}}>{r.long}</div>
+              <div style={{fontSize:'20px',fontWeight:'500',fontFamily:'Georgia,Cambria,serif',letterSpacing:'-0.2px',color:'#0a0a0a'}}>{r.short}</div>
+              <div style={{fontSize:'14px',color:'#404040',fontFamily:'Georgia,Cambria,serif',fontStyle:'italic'}}>{r.long}</div>
             </div>
           ))}
         </div>
@@ -100,22 +100,22 @@ export default function HomePage() {
         <Link href="/archive" style={{textDecoration:'none',color:'inherit'}}>
           <div style={{padding:'32px 24px',position:'relative',borderRight:'0.5px solid #e5e5e5',cursor:'pointer'}}>
             <div style={{position:'absolute',top:0,left:0,width:'3px',height:'100%',background:`linear-gradient(180deg,#1D9E75 0%,#7F77DD 100%)`}}></div>
-            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'10px',paddingLeft:'6px'}}>Top-down · Global signals</div>
-            <div style={{fontSize:'22px',fontWeight:'500',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px'}}>Big City</div>
-            <div style={{fontSize:'13px',color:'#737373',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>Data. Markets. Policy. Scale. For the fact-driven mind.</div>
+            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#737373',marginBottom:'10px',paddingLeft:'6px'}}>Top-down · Global signals</div>
+            <div style={{fontSize:'22px',fontWeight:'600',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px',color:'#0a0a0a'}}>Big City</div>
+            <div style={{fontSize:'13px',color:'#404040',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>Data. Markets. Policy. Scale. For the fact-driven mind.</div>
             <div style={{display:'flex',flexDirection:'column',gap:'6px',marginBottom:'16px',paddingLeft:'6px'}}>
               {[R.story,R.feeling].map(r => (
                 <div key={r.short} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}}>
                   <div style={{width:'5px',height:'5px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
-                  <span style={{fontWeight:'500',color:'#525252'}}>{r.short}</span>
-                  <span style={{color:'#a3a3a3'}}>{r.long}</span>
+                  <span style={{fontWeight:'500',color:'#262626'}}>{r.short}</span>
+                  <span style={{color:'#737373'}}>{r.long}</span>
                 </div>
               ))}
             </div>
             {bigCity[0] && (
               <div style={{padding:'12px',border:'0.5px solid #e5e5e5',borderRadius:'6px',marginBottom:'16px'}}>
-                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'5px'}}>Latest · {bigCity[0].score}/10</div>
-                <div style={{fontSize:'12px',color:'#737373',lineHeight:'1.5'}}>{bigCity[0].headline}</div>
+                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#737373',marginBottom:'5px'}}>Latest · {bigCity[0].score}/10</div>
+                <div style={{fontSize:'12px',color:'#404040',lineHeight:'1.5'}}>{bigCity[0].headline}</div>
               </div>
             )}
             <div style={{fontSize:'13px',fontWeight:'500',paddingLeft:'6px'}}>Enter →</div>
@@ -125,22 +125,22 @@ export default function HomePage() {
         <Link href="/archive" style={{textDecoration:'none',color:'inherit'}}>
           <div style={{padding:'32px 24px',position:'relative',cursor:'pointer'}}>
             <div style={{position:'absolute',top:0,left:0,width:'3px',height:'100%',background:`linear-gradient(180deg,#7F77DD 0%,#BA7517 100%)`}}></div>
-            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'10px',paddingLeft:'6px'}}>Bottom-up · Human stories</div>
-            <div style={{fontSize:'22px',fontWeight:'500',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px'}}>Small Town</div>
-            <div style={{fontSize:'13px',color:'#737373',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>People. Stories. Questions. For the human-driven heart.</div>
+            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#737373',marginBottom:'10px',paddingLeft:'6px'}}>Bottom-up · Human stories</div>
+            <div style={{fontSize:'22px',fontWeight:'600',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px',color:'#0a0a0a'}}>Small Town</div>
+            <div style={{fontSize:'13px',color:'#404040',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>People. Stories. Questions. For the human-driven heart.</div>
             <div style={{display:'flex',flexDirection:'column',gap:'6px',marginBottom:'16px',paddingLeft:'6px'}}>
               {[R.feeling,R.response].map(r => (
                 <div key={r.short} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}}>
                   <div style={{width:'5px',height:'5px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
-                  <span style={{fontWeight:'500',color:'#525252'}}>{r.short}</span>
-                  <span style={{color:'#a3a3a3'}}>{r.long}</span>
+                  <span style={{fontWeight:'500',color:'#262626'}}>{r.short}</span>
+                  <span style={{color:'#737373'}}>{r.long}</span>
                 </div>
               ))}
             </div>
             {smallTown[0] && (
               <div style={{padding:'12px',border:'0.5px solid #e5e5e5',borderRadius:'6px',marginBottom:'16px'}}>
-                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'5px'}}>Latest commentary</div>
-                <div style={{fontSize:'12px',color:'#737373',lineHeight:'1.5'}}>{smallTown[0].headline}</div>
+                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#737373',marginBottom:'5px'}}>Latest commentary</div>
+                <div style={{fontSize:'12px',color:'#404040',lineHeight:'1.5'}}>{smallTown[0].headline}</div>
               </div>
             )}
             <div style={{fontSize:'13px',fontWeight:'500',paddingLeft:'6px'}}>Enter →</div>
@@ -151,8 +151,8 @@ export default function HomePage() {
       {articles.length > 0 && (
         <section style={{padding:'24px',borderBottom:'0.5px solid #e5e5e5'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px'}}>
-            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3'}}>Latest Intelligence</div>
-            <Link href="/archive" style={{fontSize:'12px',color:'#737373',textDecoration:'underline'}}>View all →</Link>
+            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#737373'}}>Latest Intelligence</div>
+            <Link href="/archive" style={{fontSize:'12px',color:'#404040',textDecoration:'underline'}}>View all →</Link>
           </div>
           {articles.slice(0,6).map(article => {
             const r = article.type === 'BIG CITY' ? R.story : R.feeling;
@@ -162,7 +162,7 @@ export default function HomePage() {
                   <div style={{display:'flex',alignItems:'center',gap:'10px',flex:1,minWidth:0}}>
                     <div style={{width:'5px',height:'5px',borderRadius:'50%',flexShrink:0,background:r.color}}></div>
                     <span style={{fontSize:'10px',fontWeight:'500',padding:'1px 6px',borderRadius:'3px',flexShrink:0,background:r.light,color:r.dark}}>{article.type}</span>
-                    <span style={{fontSize:'14px',fontFamily:'Georgia,serif',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{article.headline}</span>
+                    <span style={{fontSize:'15px',fontFamily:'Georgia,serif',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:'#0a0a0a',fontWeight:'400'}}>{article.headline}</span>
                   </div>
                   <div style={{display:'flex',alignItems:'center',gap:'10px',flexShrink:0,marginLeft:'12px'}}>
                     <span style={{fontSize:'11px',fontWeight:'500',color:r.color}}>{article.score}/10</span>
@@ -176,7 +176,7 @@ export default function HomePage() {
       )}
 
       <section style={{padding:'28px 24px',background:'#fafafa',borderBottom:'0.5px solid #e5e5e5'}}>
-        <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'20px'}}>Editorial DNA</div>
+        <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#737373',marginBottom:'20px'}}>Editorial DNA</div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'20px',marginBottom:'20px'}}>
           {[
             {...R.story, body:'Facts, data, events, sources. What can be verified and reported.'},
@@ -185,22 +185,22 @@ export default function HomePage() {
           ].map(r => (
             <div key={r.short} style={{borderLeft:`2px solid ${r.color}`,paddingLeft:'14px'}}>
               <div style={{fontSize:'13px',fontWeight:'500',marginBottom:'3px'}}>{r.short}</div>
-              <div style={{fontSize:'13px',color:'#737373',fontStyle:'italic',fontFamily:'Georgia,serif',marginBottom:'6px'}}>{r.long}</div>
-              <div style={{fontSize:'11px',color:'#a3a3a3',lineHeight:'1.6'}}>{r.body}</div>
+              <div style={{fontSize:'13px',color:'#404040',fontStyle:'italic',fontFamily:'Georgia,serif',marginBottom:'6px'}}>{r.long}</div>
+              <div style={{fontSize:'11px',color:'#737373',lineHeight:'1.6'}}>{r.body}</div>
             </div>
           ))}
         </div>
-        <div style={{fontSize:'13px',fontStyle:'italic',color:'#a3a3a3',fontFamily:'Georgia,serif',paddingTop:'16px',borderTop:'0.5px solid #e5e5e5'}}>
+        <div style={{fontSize:'13px',fontStyle:'italic',color:'#737373',fontFamily:'Georgia,serif',paddingTop:'16px',borderTop:'0.5px solid #e5e5e5'}}>
           &ldquo;Technology is a tool. Community is the outcome. People are the destination.&rdquo; — Etherom
         </div>
       </section>
 
       <footer style={{padding:'16px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:'11px',color:'#a3a3a3'}}>Z-Factors · Community Intelligence · Part of Etherom</span>
+        <span style={{fontSize:'11px',color:'#737373'}}>Z-Factors · Community Intelligence · Part of Etherom</span>
         <div style={{display:'flex',gap:'16px',fontSize:'11px'}}>
-          <Link href="/archive" style={{color:'#a3a3a3',textDecoration:'none'}}>Archive</Link>
-          <Link href="/about" style={{color:'#a3a3a3',textDecoration:'none'}}>About</Link>
-          <Link href="/privacy" style={{color:'#a3a3a3',textDecoration:'none'}}>Privacy</Link>
+          <Link href="/archive" style={{color:'#737373',textDecoration:'none'}}>Archive</Link>
+          <Link href="/about" style={{color:'#737373',textDecoration:'none'}}>About</Link>
+          <Link href="/privacy" style={{color:'#737373',textDecoration:'none'}}>Privacy</Link>
         </div>
       </footer>
 
