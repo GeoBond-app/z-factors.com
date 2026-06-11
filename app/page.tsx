@@ -4,135 +4,204 @@ import path from 'path';
 
 function getArticles() {
   const analysisDir = path.join(process.cwd(), 'app/analysis');
-  const folders = fs.readdirSync(analysisDir)
-    .filter(f => f.match(/^ta-\d+$/i))
-    .sort((a, b) => {
-      const numA = parseInt(a.replace(/ta-/i,''));
-      const numB = parseInt(b.replace(/ta-/i,''));
-      return numB - numA;
+  try {
+    const folders = fs.readdirSync(analysisDir)
+      .filter(f => f.match(/^ta-\d+$/i))
+      .sort((a, b) => parseInt(b.replace(/ta-/i,'')) - parseInt(a.replace(/ta-/i,'')));
+    return folders.map(folder => {
+      try {
+        const content = fs.readFileSync(path.join(analysisDir, folder, 'page.tsx'), 'utf8');
+        const titleMatch = content.match(/title: ['"]([^'"]+) \| Z-Factors['"]/);
+        const descMatch = content.match(/description: ['"]([^'"]+)['"]/);
+        const scoreMatch = content.match(/Signal[:\s]+(\d+)\/10/);
+        const dateMatch = content.match(/(\d{4}-\d{2}-\d{2})/);
+        const isCommentary = /Commentary/i.test(content);
+        return {
+          id: folder.toUpperCase(),
+          slug: folder.toLowerCase(),
+          headline: titleMatch?.[1]?.trim() || folder,
+          description: descMatch?.[1] || '',
+          score: scoreMatch?.[1] || '0',
+          date: dateMatch?.[1] || '',
+          type: isCommentary ? 'SMALL TOWN' : 'BIG CITY'
+        };
+      } catch { return { id: folder.toUpperCase(), slug: folder, headline: folder, description: '', score: '0', date: '', type: 'BIG CITY' }; }
     });
-  return folders.map(folder => {
-    try {
-      const content = fs.readFileSync(
-        path.join(analysisDir, folder, 'page.tsx'), 'utf8'
-      );
-      const titleMatch = content.match(/title: '([^']+) \| Z-Factors'/);
-      const descMatch = content.match(/description: '([^']+)'/);
-      const h1Match = content.match(/<h1[^>]*>\s*([^<]+)\s*<\/h1>/);
-      const scoreMatch = content.match(/Signal: (\d+)\/10/);
-      const dateMatch = content.match(/(\d{4}-\d{2}-\d{2})/);
-      return {
-        id: folder.toUpperCase(),
-        slug: folder.toLowerCase(),
-        headline: (titleMatch?.[1] || h1Match?.[1] || folder).trim(),
-        description: descMatch?.[1] || '',
-        score: scoreMatch?.[1] || '0',
-        date: dateMatch?.[1] || ''
-      };
-    } catch(e) {
-      return { id: folder.toUpperCase(), slug: folder, headline: folder, description: '', score: '0', date: '' };
-    }
-  });
+  } catch { return []; }
 }
+
+const R = {
+  story:    { color: '#1D9E75', light: '#E1F5EE', dark: '#085041', short: 'The real story.',    long: 'What really happened.' },
+  feeling:  { color: '#7F77DD', light: '#EEEDFE', dark: '#3C3489', short: 'The real feeling.',  long: 'How it really lands on people.' },
+  response: { color: '#BA7517', light: '#FAEEDA', dark: '#633806', short: 'The real response.', long: 'What we can do together.' },
+};
 
 export default function HomePage() {
   const articles = getArticles();
   const featured = articles[0];
-  const rest = articles.slice(1);
+  const bigCity = articles.filter(a => a.type === 'BIG CITY').slice(0,1);
+  const smallTown = articles.filter(a => a.type === 'SMALL TOWN').slice(0,1);
 
   return (
-    <main className="max-w-5xl mx-auto px-8 py-12 space-y-16">
+    <main style={{minHeight:'100vh',background:'#fff',color:'#171717',fontFamily:'ui-sans-serif,system-ui,-apple-system,sans-serif'}}>
 
-      <header className="border-b border-neutral-200 pb-8">
-        <div className="flex justify-between items-center mb-10">
-          <div>
-            <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">
-              Track A · Community Intelligence
-            </div>
-            <h1 className="text-5xl font-bold mt-2">
-              Z-FACTORS
-            </h1>
-          </div>
-          <nav className="space-x-6 text-sm">
-            <Link href="/">Home</Link>
-            <Link href="/archive">Archive</Link>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/privacy">Privacy</Link>
-          </nav>
+      <nav style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'16px 24px',borderBottom:'0.5px solid #e5e5e5'}}>
+        <div>
+          <div style={{fontSize:'20px',fontWeight:'500',letterSpacing:'-0.4px'}}>Z-Factors</div>
+          <div style={{fontSize:'10px',letterSpacing:'0.18em',textTransform:'uppercase',color:'#a3a3a3',marginTop:'2px'}}>The real story · The real feeling · The real response</div>
         </div>
-        <p className="text-xl text-neutral-700 max-w-2xl">
-          Most news tells you what happened.
-          We ask how people are carrying it.
-        </p>
-        <p className="text-neutral-600 mt-4 max-w-3xl">
-          Z-Factors interprets global events through three lenses:
-          Visible Reality, Human Reality, and Shared Reality.
-        </p>
-      </header>
+        <div style={{display:'flex',gap:'20px',fontSize:'13px',color:'#737373'}}>
+          <Link href="/archive" style={{color:'#737373',textDecoration:'none'}}>Archive</Link>
+          <Link href="/about" style={{color:'#737373',textDecoration:'none'}}>About</Link>
+          <Link href="/contact" style={{color:'#737373',textDecoration:'none'}}>Contact</Link>
+        </div>
+      </nav>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',borderBottom:'0.5px solid #e5e5e5'}}>
+        {[R.story,R.feeling,R.response].map((r,i) => (
+          <div key={r.short} style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:'8px',borderRight:i<2?'0.5px solid #e5e5e5':'none'}}>
+            <div style={{width:'7px',height:'7px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
+            <div>
+              <div style={{fontSize:'11px',fontWeight:'500',color:'#525252'}}>{r.short}</div>
+              <div style={{fontSize:'10px',color:'#a3a3a3'}}>{r.long}</div>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {featured && (
-        <section className="border-l-4 border-black pl-6">
-          <div className="text-xs uppercase tracking-widest text-neutral-500 mb-3">
-            Latest Signal · Score {featured.score}/10
+        <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 24px',borderBottom:'0.5px solid #e5e5e5',background:'#fafafa'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'5px',fontSize:'10px',letterSpacing:'0.12em',textTransform:'uppercase',color:'#1D9E75',flexShrink:0}}>
+            <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'#1D9E75'}}></div>Live
           </div>
-          <h2 className="text-3xl font-serif mb-3">
-            {featured.headline}
-          </h2>
-          <p className="text-neutral-600 mb-4">{featured.description}</p>
-          <Link href={"/analysis/" + featured.slug} className="underline font-medium">
-            Read Analysis →
-          </Link>
-        </section>
+          <span style={{fontSize:'13px',color:'#737373',flex:1,lineHeight:'1.4'}}>{featured.headline}</span>
+          <span style={{fontSize:'10px',fontWeight:'500',padding:'2px 8px',background:'#1D9E75',color:'#fff',borderRadius:'3px',flexShrink:0}}>{featured.score}/10</span>
+        </div>
       )}
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-6">
-          Latest Analysis
-        </h2>
-        <div className="space-y-4">
-          {articles.map(article => (
-            <article key={article.id} className="border rounded-lg p-6 hover:border-neutral-400 transition-colors">
-              <div className="text-sm text-neutral-500 mb-2">
-                {article.id} · {article.date} · Signal: {article.score}/10
-              </div>
-              <h3 className="text-2xl font-semibold mb-3">
-                {article.headline}
-              </h3>
-              <p className="text-neutral-700 mb-4">{article.description}</p>
-              <Link href={"/analysis/" + article.slug} className="underline font-medium">
-                Read Analysis →
-              </Link>
-            </article>
+      <section style={{padding:'44px 24px 40px',borderBottom:'0.5px solid #e5e5e5',maxWidth:'580px'}}>
+        <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'20px'}}>Community Intelligence · Bay Area + Global</div>
+        <div style={{display:'flex',flexDirection:'column',gap:'16px',marginBottom:'28px'}}>
+          {[R.story,R.feeling,R.response].map(r => (
+            <div key={r.short} style={{paddingLeft:'16px',borderLeft:`2px solid ${r.color}`}}>
+              <div style={{fontSize:'18px',fontWeight:'500',fontFamily:'Georgia,Cambria,serif',letterSpacing:'-0.2px'}}>{r.short}</div>
+              <div style={{fontSize:'14px',color:'#737373',fontFamily:'Georgia,Cambria,serif',fontStyle:'italic'}}>{r.long}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+          {[R.story,R.feeling,R.response].map(r => (
+            <span key={r.short} style={{fontSize:'11px',padding:'4px 12px',borderRadius:'999px',fontWeight:'500',background:r.light,color:r.dark}}>{r.short.replace('.','')}</span>
           ))}
         </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-6">
-          Editorial DNA
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="font-semibold mb-2">Visible Reality</h3>
-            <p className="text-neutral-600">Facts, events, economics, policies.</p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',borderBottom:'0.5px solid #e5e5e5'}}>
+        <Link href="/archive" style={{textDecoration:'none',color:'inherit'}}>
+          <div style={{padding:'32px 24px',position:'relative',borderRight:'0.5px solid #e5e5e5',cursor:'pointer'}}>
+            <div style={{position:'absolute',top:0,left:0,width:'3px',height:'100%',background:`linear-gradient(180deg,#1D9E75 0%,#7F77DD 100%)`}}></div>
+            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'10px',paddingLeft:'6px'}}>Top-down · Global signals</div>
+            <div style={{fontSize:'22px',fontWeight:'500',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px'}}>Big City</div>
+            <div style={{fontSize:'13px',color:'#737373',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>Data. Markets. Policy. Scale. For the fact-driven mind.</div>
+            <div style={{display:'flex',flexDirection:'column',gap:'6px',marginBottom:'16px',paddingLeft:'6px'}}>
+              {[R.story,R.feeling].map(r => (
+                <div key={r.short} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}}>
+                  <div style={{width:'5px',height:'5px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
+                  <span style={{fontWeight:'500',color:'#525252'}}>{r.short}</span>
+                  <span style={{color:'#a3a3a3'}}>{r.long}</span>
+                </div>
+              ))}
+            </div>
+            {bigCity[0] && (
+              <div style={{padding:'12px',border:'0.5px solid #e5e5e5',borderRadius:'6px',marginBottom:'16px'}}>
+                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'5px'}}>Latest · {bigCity[0].score}/10</div>
+                <div style={{fontSize:'12px',color:'#737373',lineHeight:'1.5'}}>{bigCity[0].headline}</div>
+              </div>
+            )}
+            <div style={{fontSize:'13px',fontWeight:'500',paddingLeft:'6px'}}>Enter →</div>
           </div>
-          <div>
-            <h3 className="font-semibold mb-2">Human Reality</h3>
-            <p className="text-neutral-600">How people experience and carry it.</p>
+        </Link>
+
+        <Link href="/archive" style={{textDecoration:'none',color:'inherit'}}>
+          <div style={{padding:'32px 24px',position:'relative',cursor:'pointer'}}>
+            <div style={{position:'absolute',top:0,left:0,width:'3px',height:'100%',background:`linear-gradient(180deg,#7F77DD 0%,#BA7517 100%)`}}></div>
+            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'10px',paddingLeft:'6px'}}>Bottom-up · Human stories</div>
+            <div style={{fontSize:'22px',fontWeight:'500',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px'}}>Small Town</div>
+            <div style={{fontSize:'13px',color:'#737373',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>People. Stories. Questions. For the human-driven heart.</div>
+            <div style={{display:'flex',flexDirection:'column',gap:'6px',marginBottom:'16px',paddingLeft:'6px'}}>
+              {[R.feeling,R.response].map(r => (
+                <div key={r.short} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}}>
+                  <div style={{width:'5px',height:'5px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
+                  <span style={{fontWeight:'500',color:'#525252'}}>{r.short}</span>
+                  <span style={{color:'#a3a3a3'}}>{r.long}</span>
+                </div>
+              ))}
+            </div>
+            {smallTown[0] && (
+              <div style={{padding:'12px',border:'0.5px solid #e5e5e5',borderRadius:'6px',marginBottom:'16px'}}>
+                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'5px'}}>Latest commentary</div>
+                <div style={{fontSize:'12px',color:'#737373',lineHeight:'1.5'}}>{smallTown[0].headline}</div>
+              </div>
+            )}
+            <div style={{fontSize:'13px',fontWeight:'500',paddingLeft:'6px'}}>Enter →</div>
           </div>
-          <div>
-            <h3 className="font-semibold mb-2">Shared Reality</h3>
-            <p className="text-neutral-600">Community ripples and collective response.</p>
+        </Link>
+      </div>
+
+      {articles.length > 0 && (
+        <section style={{padding:'24px',borderBottom:'0.5px solid #e5e5e5'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px'}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3'}}>Latest Intelligence</div>
+            <Link href="/archive" style={{fontSize:'12px',color:'#737373',textDecoration:'underline'}}>View all →</Link>
           </div>
+          {articles.slice(0,6).map(article => {
+            const r = article.type === 'BIG CITY' ? R.story : R.feeling;
+            return (
+              <Link key={article.id} href={`/analysis/${article.slug}`} style={{textDecoration:'none',color:'inherit'}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'11px 0',borderBottom:'0.5px solid #f5f5f5'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:'10px',flex:1,minWidth:0}}>
+                    <div style={{width:'5px',height:'5px',borderRadius:'50%',flexShrink:0,background:r.color}}></div>
+                    <span style={{fontSize:'10px',fontWeight:'500',padding:'1px 6px',borderRadius:'3px',flexShrink:0,background:r.light,color:r.dark}}>{article.type}</span>
+                    <span style={{fontSize:'14px',fontFamily:'Georgia,serif',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{article.headline}</span>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:'10px',flexShrink:0,marginLeft:'12px'}}>
+                    <span style={{fontSize:'11px',fontWeight:'500',color:r.color}}>{article.score}/10</span>
+                    <span style={{fontSize:'11px',color:'#d4d4d4'}}>{article.date}</span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </section>
+      )}
+
+      <section style={{padding:'28px 24px',background:'#fafafa',borderBottom:'0.5px solid #e5e5e5'}}>
+        <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#a3a3a3',marginBottom:'20px'}}>Editorial DNA</div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'20px',marginBottom:'20px'}}>
+          {[
+            {...R.story, body:'Facts, data, events, sources. What can be verified and reported.'},
+            {...R.feeling, body:'Who absorbs the impact. What it costs in human terms. How it feels.'},
+            {...R.response, body:'Community action. Collective strength. What comes next together.'}
+          ].map(r => (
+            <div key={r.short} style={{borderLeft:`2px solid ${r.color}`,paddingLeft:'14px'}}>
+              <div style={{fontSize:'13px',fontWeight:'500',marginBottom:'3px'}}>{r.short}</div>
+              <div style={{fontSize:'13px',color:'#737373',fontStyle:'italic',fontFamily:'Georgia,serif',marginBottom:'6px'}}>{r.long}</div>
+              <div style={{fontSize:'11px',color:'#a3a3a3',lineHeight:'1.6'}}>{r.body}</div>
+            </div>
+          ))}
         </div>
-        <p className="text-neutral-500 mt-6 text-sm italic">
-          Technology is a tool. Community is the outcome. People are the destination.
-        </p>
+        <div style={{fontSize:'13px',fontStyle:'italic',color:'#a3a3a3',fontFamily:'Georgia,serif',paddingTop:'16px',borderTop:'0.5px solid #e5e5e5'}}>
+          &ldquo;Technology is a tool. Community is the outcome. People are the destination.&rdquo; — Etherom
+        </div>
       </section>
 
-      <footer className="border-t pt-8 text-sm text-neutral-500">
-        <div>Z-Factors · Track A Intelligence · Part of Etherom</div>
+      <footer style={{padding:'16px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <span style={{fontSize:'11px',color:'#a3a3a3'}}>Z-Factors · Community Intelligence · Part of Etherom</span>
+        <div style={{display:'flex',gap:'16px',fontSize:'11px'}}>
+          <Link href="/archive" style={{color:'#a3a3a3',textDecoration:'none'}}>Archive</Link>
+          <Link href="/about" style={{color:'#a3a3a3',textDecoration:'none'}}>About</Link>
+          <Link href="/privacy" style={{color:'#a3a3a3',textDecoration:'none'}}>Privacy</Link>
+        </div>
       </footer>
 
     </main>
