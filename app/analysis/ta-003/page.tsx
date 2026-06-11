@@ -10,7 +10,7 @@ export default function TA003() {
     <main className="max-w-3xl mx-auto px-8 py-12 space-y-10">
 
       <header className="border-b border-neutral-200 pb-6">
-        <Link href="/" className="text-xs font-mono text-neutral-400 hover:text-neutral-700">
+        <Link href="/" className="text-xs font-mono text-neutral-400 hover:text-neutral-900">
           ← Back Home
         </Link>
         <div className="text-xs uppercase tracking-widest text-neutral-500 mt-6 mb-2">
@@ -19,12 +19,12 @@ export default function TA003() {
         <h1 className="text-4xl font-serif mt-2 leading-tight">
           Beyond the Pump: The Invisible Tax of War and Inflation
         </h1>
-        <p className="text-xl text-neutral-600 mt-4">
+        <p className="text-xl text-neutral-700 mt-4">
           The 'global inflation shock' isn't just about rising prices; it's a brutal redistribution of suffering and wealth, often disguised by broad economic headlines.
         </p>
       </header>
 
-      <section className="space-y-4 text-neutral-800 leading-relaxed">
+      <section className="space-y-4 text-neutral-900 leading-relaxed">
         <h2 className="text-xl font-semibold">The Issue</h2>
         <p>We&apos;re examining the intensifying global inflation, purportedly driven by the Iran war and subsequent energy price surges. While media focuses on percentage increases and economic indicators, the true issue is how this &apos;inflation shock&apos; acts as a regressive tax, disproportionately burdening vulnerable populations and shifting wealth and power, all while the human cost of conflict is frequently relegated to footnotes or overlooked entirely.</p>
       </section>
@@ -69,7 +69,7 @@ export default function TA003() {
 
       <footer className="border-t pt-6 flex justify-between text-sm text-neutral-500">
         <span>TA-003 · Z-Factors · Commentary</span>
-        <Link href="/archive" className="hover:text-neutral-700">
+        <Link href="/archive" className="hover:text-neutral-900">
           View Archive →
         </Link>
       </footer>

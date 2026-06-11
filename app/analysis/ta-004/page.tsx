@@ -9,17 +9,19 @@ export default function TA004() {
   return (
     <main className="max-w-3xl mx-auto px-8 py-12 space-y-10">
 
-      <header className="border-b border-neutral-200 pb-6">
-        <Link href="/" className="text-xs font-mono text-neutral-400 hover:text-neutral-700">
+      <header className="border-b border-neutral-200 pb-8">
+        <Link href="/" className="text-xs font-mono text-neutral-400 hover:text-neutral-900">
           ← Back Home
         </Link>
-        <div className="text-xs uppercase tracking-widest text-neutral-500 mt-6 mb-2">
-          TA-004 · 2026-06-11 · Signal: 7/10
+        <div className="flex items-center gap-3 mt-6 mb-3">
+          <span className="text-xs font-mono text-neutral-400">TA-004 · 2026-06-11</span>
+          <span className="text-xs font-mono font-medium px-2 py-0.5 rounded" style={{background:"#E1F5EE",color:"#085041"}}>Signal 7/10</span>
+          <span className="text-xs font-mono px-2 py-0.5 rounded" style={{background:"#E1F5EE",color:"#085041"}}>BIG CITY</span>
         </div>
-        <h1 className="text-4xl font-serif mt-2 leading-tight">
+        <h1 className="text-4xl font-serif font-normal mt-2 leading-tight">
           Global Markets Reel as War-Driven Energy Costs Fuel Inflation Surge
         </h1>
-        <p className="text-xl text-neutral-600 mt-4">
+        <p className="text-xl text-neutral-700 mt-4">
           New forecasts predict steepest energy price hike since 2022, pushing core necessities out of reach for millions.
         </p>
         <div className="text-xs text-neutral-400 mt-3">
@@ -35,7 +37,7 @@ export default function TA004() {
             <div className="text-xs text-neutral-400 italic">What really happened.</div>
           </div>
         </div>
-        <div className="space-y-4 text-neutral-800 leading-relaxed">
+        <div className="space-y-4 text-neutral-900 leading-relaxed">
         <p>Global energy prices are projected to surge by a staggering 24% in 2026, reaching levels not seen since 2022. This spike is directly attributed to escalating disruptions from ongoing conflict in the Middle East, particularly impacting the vital Strait of Hormuz, through which a significant portion of global oil and LNG passes. This energy crisis is part of a broader trend, with overall commodity prices expected to jump 16%, and critical goods like fertilizers seeing an anticipated 31% increase. Developing economies are bracing for the harshest impact, with projected inflation averaging 5.1% and growth downgraded to a mere 3.6%.</p>
         <p>For real people, this means a relentless erosion of purchasing power. The cost of filling a gas tank or heating a home becomes a significant burden, while grocery bills continue to climb. Poorer households, who already dedicate a disproportionately large share of their income to essentials like food and fuel, are forced into impossible choices between putting food on the table, affording necessary medical care, or sending their children to school. Farmers, the bedrock of our food supply, face crippling increases in fertilizer and fuel costs, threatening their livelihoods and potentially leading to reduced harvests. The grim reality is that up to 45 million more people could be pushed into acute food insecurity, exacerbating a global crisis.</p>
         <p>This economic shockwave reverberates through communities, amplifying existing inequalities. As basic necessities become unaffordable for many, social tensions rise, and demands for government intervention intensify. Access to affordable food and energy transforms from an individual struggle into a central community concern, sparking local mutual aid efforts and, in some cases, protests against perceived inaction. For local residents, especially in areas like the Bay Area, this could mean continued high gas prices, increased utility bills, and higher costs for imported goods. Local food banks and social services will likely face unprecedented demand as more families struggle to meet their basic needs, while small businesses, particularly those reliant on transportation, grapple with tighter margins.</p>
@@ -66,7 +68,7 @@ export default function TA004() {
 
       <footer className="border-t pt-6 flex justify-between text-sm text-neutral-500">
         <span>TA-004 · Z-Factors · Track A</span>
-        <Link href="/archive" className="hover:text-neutral-700">
+        <Link href="/archive" className="hover:text-neutral-900">
           View Archive →
         </Link>
       </footer>
