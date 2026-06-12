@@ -141,7 +141,7 @@ export default function ArchivePage() {
 
       <footer style={{padding:'16px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <Link href="/" style={{fontSize:'11px',color:'#777777',textDecoration:'none'}}>← Back to Z-Factors</Link>
-        <span style={{fontSize:'11px',color:'#777777'}}>{articles.length} articles · Community Intelligence</span>
+        <span style={{fontSize:'11px',color:'#777777'}}>{articles.length} articles · Community Portal</span>
       </footer>
 
     </main>
