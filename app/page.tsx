@@ -82,7 +82,7 @@ export default function HomePage() {
       )}
 
       <section style={{padding:'44px 24px 40px',borderBottom:'0.5px solid #e5e5e5',maxWidth:'580px'}}>
-        <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#555555',marginBottom:'20px'}}>Community Intelligence · Bay Area + Global</div>
+        <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#555555',marginBottom:'20px'}}>Community Portal · Bay Area + Global</div>
         <div style={{display:'flex',flexDirection:'column',gap:'16px',marginBottom:'28px'}}>
           {[R.story,R.feeling,R.response].map(r => (
             <div key={r.short} style={{paddingLeft:'16px',borderLeft:`2px solid ${r.color}`}}>
@@ -198,7 +198,7 @@ export default function HomePage() {
       </section>
 
       <footer style={{padding:'16px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:'11px',color:'#555555'}}>Z-Factors · Community Intelligence · Part of Etherom</span>
+        <span style={{fontSize:'11px',color:'#555555'}}>Z-Factors · Community Portal · Part of Etherom</span>
         <div style={{display:'flex',gap:'16px',fontSize:'11px'}}>
           <Link href="/archive" style={{color:'#555555',textDecoration:'none'}}>Archive</Link>
           <Link href="/about" style={{color:'#555555',textDecoration:'none'}}>About</Link>
