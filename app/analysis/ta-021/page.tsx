@@ -85,20 +85,27 @@ export default function TA021() {
 
       <section className="space-y-4">
         <button
-          onClick={() => {
-            const el = document.getElementById('track2-TA-021');
-            if (el) {
-              el.style.display = el.style.display === 'none' ? 'block' : 'none';
-              const btn = document.getElementById('track2-btn-TA-021');
-              if (btn) btn.textContent = el.style.display === 'none' ? '+ See the insight →' : '− Hide the insight';
-            }
-          }}
           id="track2-btn-TA-021"
           className="text-sm font-medium border-b border-neutral-900 pb-0.5 hover:text-neutral-500 hover:border-neutral-500 transition-colors bg-transparent cursor-pointer"
           style={{background:'none',padding:'0',textAlign:'left'}}
         >
           + See the insight →
         </button>
+        <script dangerouslySetInnerHTML={{__html: `
+          document.addEventListener('DOMContentLoaded', function() {
+            var btn = document.getElementById('track2-btn-TA-021');
+            if (btn) btn.addEventListener('click', function() {
+              var el = document.getElementById('track2-TA-021');
+              if (el.style.display === 'none' || el.style.display === '') {
+                el.style.display = 'block';
+                btn.textContent = '- Hide the insight';
+              } else {
+                el.style.display = 'none';
+                btn.textContent = '+ See the insight →';
+              }
+            });
+          });
+        `}} />
 
         <div id="track2-TA-021" style={{display:'none'}}>
           
