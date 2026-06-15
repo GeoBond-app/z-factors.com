@@ -226,7 +226,7 @@ export default function HomePage() {
           </div>
 
           <div>
-            <PillarHeader color={BL} title="Entertainment - Events" link="View all events" href="/archive" headerBg="#E6F1FB" />
+            <PillarHeader color={BL} title="Entertainment - Events" link="Coming soon" href="/about" headerBg="#E6F1FB" />
             <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',background:'#FAFAFA'}}>
               {[
                 {cat:'Sports signals',name:'Warriors home game tonight',meta:'Foot traffic signal: HIGH - businesses near Chase Center',sig:'9'},
