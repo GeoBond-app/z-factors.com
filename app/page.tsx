@@ -1,4 +1,11 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Z-Factors | Community Portal',
+  description: 'Community signals for the Bay Area and beyond.',
+  viewport: 'width=device-width, initial-scale=1',
+};
 import fs from 'fs';
 import path from 'path';
 
@@ -64,6 +71,20 @@ export default function HomePage() {
 
   return (
     <main style={{minHeight:'100vh',background:'#fff',color:TX,fontFamily:'ui-sans-serif,system-ui,-apple-system,sans-serif',fontSize:'13px'}}>
+      <style>{`
+        @media (max-width: 768px) {
+          .main-grid { grid-template-columns: 1fr !important; }
+          .news-grid { grid-template-columns: 1fr !important; }
+          .gov-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .biz-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .ent-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .sidebar { display: none !important; }
+          .right-rail { display: none !important; }
+          .nav-links { display: none !important; }
+          .intro-ctas { flex-direction: column !important; }
+          .signal-bar { overflow-x: auto !important; }
+        }
+      `}</style>
 
       <nav style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'11px 20px',borderBottom:`0.5px solid ${BD}`}}>
         <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
@@ -110,7 +131,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div style={{display:'grid',gridTemplateColumns:'188px 1fr 172px',minHeight:'600px'}}>
+      <div style={{display:'grid',gridTemplateColumns:'1fr',minHeight:'auto'}}>
 
         <div style={{borderRight:`0.5px solid ${BD}`}}>
           <div style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
@@ -155,7 +176,7 @@ export default function HomePage() {
         <div>
           <div style={{borderBottom:`0.5px solid ${BD}`}}>
             <PillarHeader color={T} title="News - Signals" sub={`Top ${Math.min(5,articles.length)} today`} link="View all signals" href="/archive" headerBg="#E1F5EE" />
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',background:'#fff'}}>
+            <div style={{display:'grid',gridTemplateColumns:'1fr',background:'#fff'}}>
               {top5.map((a, i) => (
                 <Link key={a.id} href={`/analysis/${a.slug}`} style={{textDecoration:'none',color:'inherit'}}>
                   <div style={{padding:'11px 14px',borderBottom:`0.5px solid ${BD}`,borderRight:i%2===0?`0.5px solid ${BD}`:'none',cursor:'pointer'}}>
@@ -179,7 +200,7 @@ export default function HomePage() {
 
           <div style={{borderBottom:`0.5px solid ${BD}`}}>
             <PillarHeader color={P} title="Government - Services" link="View all agencies" href="https://z-factoring.com" headerBg="#EEEDFE" />
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',background:'#FAFAFA'}}>
+            <div className='gov-grid' style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',background:'#FAFAFA'}}>
               {[
                 {name:'City Hall',sig:'7',bg:PL},
                 {name:'Police Dept',sig:'8',bg:'#FCEBEB'},
@@ -202,7 +223,7 @@ export default function HomePage() {
 
           <div style={{borderBottom:`0.5px solid ${BD}`}}>
             <PillarHeader color={A} title="Business - Directory" sub="Ranked by signal" link="View all businesses" href="https://geobond.app" headerBg="#FAEEDA" />
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',background:'#fff'}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',background:'#fff'}}>
               {[
                 {cat:'Restaurants',sig:'8',bar:85,color:T,status:'Food cost: HIGH'},
                 {cat:'Real estate',sig:'7',bar:75,color:P,status:'Policy: RISING'},
@@ -227,7 +248,7 @@ export default function HomePage() {
 
           <div>
             <PillarHeader color={BL} title="Entertainment - Events" link="Coming soon" href="/about" headerBg="#E6F1FB" />
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',background:'#FAFAFA'}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',background:'#FAFAFA'}}>
               {[
                 {cat:'Sports signals',name:'Warriors home game tonight',meta:'Foot traffic signal: HIGH - businesses near Chase Center',sig:'9'},
                 {cat:'Concert signals',name:'3 concerts this week Bay Area',meta:'Venue district signal: RISING - nearby business alert',sig:'8'},
