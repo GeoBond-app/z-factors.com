@@ -1,208 +1,318 @@
 import Link from 'next/link';
-
-export const dynamic = 'force-dynamic';
 import fs from 'fs';
 import path from 'path';
+
+export const dynamic = 'force-dynamic';
 
 function getArticles() {
   const analysisDir = path.join(process.cwd(), 'app/analysis');
   try {
     const folders = fs.readdirSync(analysisDir)
-      .filter(f => f.match(/^ta-\d+$/i))
-      .sort((a, b) => parseInt(b.replace(/ta-/i,'')) - parseInt(a.replace(/ta-/i,'')));
-    return folders.map(folder => {
+      .filter((f: string) => f.match(/^ta-\d+$/i))
+      .sort((a: string, b: string) => parseInt(b.replace(/ta-/i,'')) - parseInt(a.replace(/ta-/i,'')));
+    return folders.map((folder: string) => {
       try {
         const content = fs.readFileSync(path.join(analysisDir, folder, 'page.tsx'), 'utf8');
         const titleMatch = content.match(/title: ['"]([^'"]+) \| Z-Factors['"]/);
-        const descMatch = content.match(/description: ['"]([^'"]+)['"]/);
-        const scoreMatch = content.match(/Signal[:\s]+(\d+)\/10/);
+        const scoreMatch = content.match(/Signal[:\s]+(\d+(?:\.\d+)?)\/10/);
         const dateMatch = content.match(/(\d{4}-\d{2}-\d{2})/);
         const isCommentary = /Commentary/i.test(content);
         return {
           id: folder.toUpperCase(),
           slug: folder.toLowerCase(),
           headline: titleMatch?.[1]?.trim() || folder,
-          description: descMatch?.[1] || '',
           score: scoreMatch?.[1] || '0',
           date: dateMatch?.[1] || '',
-          type: isCommentary ? 'SMALL TOWN' : 'BIG CITY'
+          type: isCommentary ? 'Small Town' : 'Big City'
         };
-      } catch { return { id: folder.toUpperCase(), slug: folder, headline: folder, description: '', score: '0', date: '', type: 'BIG CITY' }; }
+      } catch {
+        return { id: folder.toUpperCase(), slug: folder, headline: folder, score: '0', date: '', type: 'Big City' };
+      }
     });
   } catch { return []; }
 }
 
-const R = {
-  story:    { color: '#1D9E75', light: '#E1F5EE', dark: '#085041', short: 'The real story.',    long: 'What really happened.' },
-  feeling:  { color: '#7F77DD', light: '#EEEDFE', dark: '#3C3489', short: 'The real feeling.',  long: 'How it really lands on people.' },
-  response: { color: '#BA7517', light: '#FAEEDA', dark: '#633806', short: 'The real response.', long: 'What we can do together.' },
-};
+const T = '#1D9E75'; const TL = '#E1F5EE'; const TD = '#085041';
+const P = '#7F77DD'; const PL = '#EEEDFE'; const PD = '#3C3489';
+const A = '#BA7517'; const AL = '#FAEEDA'; const AD = '#633806';
+const BL = '#378ADD';
+const BD = '#DDDDDD'; const BG = '#FAFAFA';
+const TX = '#121212'; const TX3 = '#555555'; const TX4 = '#777777';
+
+function ScoreBadge({ val }: { val: string }) {
+  const v = parseFloat(val);
+  const bg = v >= 9 ? T : v >= 7 ? A : P;
+  return <span style={{fontSize:'10px',fontWeight:500,padding:'1px 6px',borderRadius:'3px',background:bg,color:'#fff',display:'inline-block'}}>{val}/10</span>;
+}
+
+function PillarHeader({ color, title, sub, link, href }: { color:string, title:string, sub?:string, link:string, href:string }) {
+  return (
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 16px',background:BG,borderBottom:`0.5px solid ${BD}`}}>
+      <div style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px',fontWeight:500}}>
+        <div style={{width:'6px',height:'6px',borderRadius:'50%',background:color}}></div>
+        {title}
+        {sub && <span style={{fontSize:'10px',padding:'1px 6px',background:TL,color:TD,borderRadius:'3px'}}>{sub}</span>}
+      </div>
+      <a href={href} style={{fontSize:'11px',color:color,textDecoration:'none'}}>{link}</a>
+    </div>
+  );
+}
 
 export default function HomePage() {
   const articles = getArticles();
-  const featured = articles[0];
-  const bigCity = articles.filter(a => a.type === 'BIG CITY').slice(0,1);
-  const smallTown = articles.filter(a => a.type === 'SMALL TOWN').slice(0,1);
+  const top5 = articles.slice(0, 5);
 
   return (
-    <main style={{minHeight:'100vh',background:'#fff',color:'#121212',fontFamily:'ui-sans-serif,system-ui,-apple-system,sans-serif'}}>
+    <main style={{minHeight:'100vh',background:'#fff',color:TX,fontFamily:'ui-sans-serif,system-ui,-apple-system,sans-serif',fontSize:'13px'}}>
 
-      <nav style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'16px 24px',borderBottom:'0.5px solid #e5e5e5'}}>
-        <div>
-          <div style={{fontSize:'20px',fontWeight:'500',letterSpacing:'-0.4px'}}>Z-Factors</div>
-          <div style={{fontSize:'10px',letterSpacing:'0.18em',textTransform:'uppercase',color:'#555555',marginTop:'2px'}}>The real story · The real feeling · The real response</div>
+      <nav style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'11px 20px',borderBottom:`0.5px solid ${BD}`}}>
+        <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
+          <div>
+            <div style={{fontSize:'17px',fontWeight:500,letterSpacing:'-0.3px'}}>Z-Factors</div>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginTop:'1px'}}>Community Portal</div>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'12px',color:TX3,border:`0.5px solid ${BD}`,padding:'4px 10px',borderRadius:'6px'}}>
+            Bay Area - San Francisco
+          </div>
         </div>
-        <div style={{display:'flex',gap:'20px',fontSize:'13px',color:'#222222'}}>
-          <Link href="/archive" style={{color:'#222222',textDecoration:'none'}}>Archive</Link>
-          <Link href="/about" style={{color:'#222222',textDecoration:'none'}}>About</Link>
-          <Link href="/contact" style={{color:'#222222',textDecoration:'none'}}>Contact</Link>
+        <div style={{display:'flex',gap:'16px',alignItems:'center',fontSize:'12px',color:TX3}}>
+          <Link href="/archive" style={{color:TX3,textDecoration:'none'}}>Signals</Link>
+          <Link href="/about" style={{color:TX3,textDecoration:'none'}}>About</Link>
+          <a href="https://z-factoring.com" style={{fontSize:'11px',padding:'5px 12px',background:P,color:'#fff',borderRadius:'5px',textDecoration:'none',fontWeight:500}}>For government</a>
+          <a href="https://geobond.app" style={{fontSize:'11px',padding:'5px 12px',background:T,color:'#fff',borderRadius:'5px',textDecoration:'none',fontWeight:500}}>For business</a>
         </div>
       </nav>
 
-      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',borderBottom:'0.5px solid #e5e5e5'}}>
-        {[R.story,R.feeling,R.response].map((r,i) => (
-          <div key={r.short} style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:'8px',borderRight:i<2?'0.5px solid #e5e5e5':'none'}}>
-            <div style={{width:'7px',height:'7px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
-            <div>
-              <div style={{fontSize:'11px',fontWeight:'500',color:'#1A1A1A'}}>{r.short}</div>
-              <div style={{fontSize:'10px',color:'#555555'}}>{r.long}</div>
+      <div style={{display:'flex',alignItems:'center',borderBottom:`0.5px solid ${BD}`,background:BG,overflowX:'auto'}}>
+        <div style={{display:'flex',alignItems:'center',gap:'5px',padding:'7px 14px',borderRight:`0.5px solid ${BD}`,flexShrink:0}}>
+          <div style={{width:'5px',height:'5px',borderRadius:'50%',background:T}}></div>
+          <span style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:T,fontWeight:500}}>Live</span>
+        </div>
+        {top5.slice(0,4).map((a, i) => (
+          <Link key={a.id} href={`/analysis/${a.slug}`} style={{textDecoration:'none',color:'inherit',flexShrink:0}}>
+            <div style={{display:'flex',alignItems:'center',gap:'8px',padding:'7px 14px',borderRight:`0.5px solid ${BD}`}}>
+              <div style={{width:'5px',height:'5px',borderRadius:'50%',background:i===0?T:i===1?A:P,flexShrink:0}}></div>
+              <span style={{fontSize:'11px',color:TX3,whiteSpace:'nowrap',maxWidth:'200px',overflow:'hidden',textOverflow:'ellipsis'}}>{a.headline}</span>
+              <ScoreBadge val={a.score} />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      {featured && (
-        <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 24px',borderBottom:'0.5px solid #e5e5e5',background:'#FAFAFA'}}>
-          <div style={{display:'flex',alignItems:'center',gap:'5px',fontSize:'10px',letterSpacing:'0.12em',textTransform:'uppercase',color:'#1D9E75',flexShrink:0}}>
-            <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'#1D9E75'}}></div>Live
-          </div>
-          <span style={{fontSize:'13px',color:'#222222',flex:1,lineHeight:'1.4'}}>{featured.headline}</span>
-          <span style={{fontSize:'10px',fontWeight:'500',padding:'2px 8px',background:'#1D9E75',color:'#fff',borderRadius:'3px',flexShrink:0}}>{featured.score}/10</span>
+      <div style={{padding:'12px 20px',borderBottom:`0.5px solid ${BD}`,background:BG,display:'flex',justifyContent:'space-between',alignItems:'center',gap:'20px'}}>
+        <p style={{fontSize:'12px',color:TX3,lineHeight:'1.6',maxWidth:'480px',margin:0}}>
+          Z-Factors surfaces community signals before they become crises. Ranked by meaning not clicks. Serving government agencies, local businesses, and the communities they shape.
+        </p>
+        <div style={{display:'flex',gap:'8px',flexShrink:0,flexWrap:'wrap'}}>
+          <a href="https://z-factoring.com" style={{fontSize:'11px',padding:'5px 10px',border:`0.5px solid ${P}`,borderRadius:'5px',color:P,textDecoration:'none',whiteSpace:'nowrap'}}>Government agency access</a>
+          <a href="https://geobond.app" style={{fontSize:'11px',padding:'5px 10px',border:`0.5px solid ${A}`,borderRadius:'5px',color:A,textDecoration:'none',whiteSpace:'nowrap'}}>List your business</a>
+          <Link href="/about" style={{fontSize:'11px',padding:'5px 10px',border:`0.5px solid ${T}`,borderRadius:'5px',color:T,textDecoration:'none',whiteSpace:'nowrap'}}>Register publication</Link>
         </div>
-      )}
-
-      <section style={{padding:'44px 24px 40px',borderBottom:'0.5px solid #e5e5e5',maxWidth:'580px'}}>
-        <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'#555555',marginBottom:'20px'}}>Community Portal · Bay Area + Global</div>
-        <div style={{display:'flex',flexDirection:'column',gap:'16px',marginBottom:'28px'}}>
-          {[R.story,R.feeling,R.response].map(r => (
-            <div key={r.short} style={{paddingLeft:'16px',borderLeft:`2px solid ${r.color}`}}>
-              <div style={{fontSize:'20px',fontWeight:'500',fontFamily:'Georgia,Cambria,serif',letterSpacing:'-0.2px',color:'#121212'}}>{r.short}</div>
-              <div style={{fontSize:'14px',color:'#222222',fontFamily:'Georgia,Cambria,serif',fontStyle:'italic'}}>{r.long}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
-          {[R.story,R.feeling,R.response].map(r => (
-            <span key={r.short} style={{fontSize:'11px',padding:'4px 12px',borderRadius:'999px',fontWeight:'500',background:r.light,color:r.dark}}>{r.short.replace('.','')}</span>
-          ))}
-        </div>
-      </section>
-
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',borderBottom:'0.5px solid #e5e5e5'}}>
-        <Link href="/archive" style={{textDecoration:'none',color:'inherit'}}>
-          <div style={{padding:'32px 24px',position:'relative',borderRight:'0.5px solid #e5e5e5',cursor:'pointer'}}>
-            <div style={{position:'absolute',top:0,left:0,width:'3px',height:'100%',background:`linear-gradient(180deg,#1D9E75 0%,#7F77DD 100%)`}}></div>
-            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#555555',marginBottom:'10px',paddingLeft:'6px'}}>Top-down · Global signals</div>
-            <div style={{fontSize:'22px',fontWeight:'600',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px',color:'#121212'}}>Big City</div>
-            <div style={{fontSize:'13px',color:'#222222',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>Data. Markets. Policy. Scale. For the fact-driven mind.</div>
-            <div style={{display:'flex',flexDirection:'column',gap:'6px',marginBottom:'16px',paddingLeft:'6px'}}>
-              {[R.story,R.feeling].map(r => (
-                <div key={r.short} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}}>
-                  <div style={{width:'5px',height:'5px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
-                  <span style={{fontWeight:'500',color:'#1A1A1A'}}>{r.short}</span>
-                  <span style={{color:'#555555'}}>{r.long}</span>
-                </div>
-              ))}
-            </div>
-            {bigCity[0] && (
-              <div style={{padding:'12px',border:'0.5px solid #e5e5e5',borderRadius:'6px',marginBottom:'16px'}}>
-                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#555555',marginBottom:'5px'}}>Latest · {bigCity[0].score}/10</div>
-                <div style={{fontSize:'12px',color:'#222222',lineHeight:'1.5'}}>{bigCity[0].headline}</div>
-              </div>
-            )}
-            <div style={{fontSize:'13px',fontWeight:'500',paddingLeft:'6px'}}>Enter →</div>
-          </div>
-        </Link>
-
-        <Link href="/archive" style={{textDecoration:'none',color:'inherit'}}>
-          <div style={{padding:'32px 24px',position:'relative',cursor:'pointer'}}>
-            <div style={{position:'absolute',top:0,left:0,width:'3px',height:'100%',background:`linear-gradient(180deg,#7F77DD 0%,#BA7517 100%)`}}></div>
-            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#555555',marginBottom:'10px',paddingLeft:'6px'}}>Bottom-up · Human stories</div>
-            <div style={{fontSize:'22px',fontWeight:'600',letterSpacing:'-0.4px',marginBottom:'6px',paddingLeft:'6px',color:'#121212'}}>Small Town</div>
-            <div style={{fontSize:'13px',color:'#222222',lineHeight:'1.65',marginBottom:'16px',paddingLeft:'6px',maxWidth:'210px'}}>People. Stories. Questions. For the human-driven heart.</div>
-            <div style={{display:'flex',flexDirection:'column',gap:'6px',marginBottom:'16px',paddingLeft:'6px'}}>
-              {[R.feeling,R.response].map(r => (
-                <div key={r.short} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}}>
-                  <div style={{width:'5px',height:'5px',borderRadius:'50%',background:r.color,flexShrink:0}}></div>
-                  <span style={{fontWeight:'500',color:'#1A1A1A'}}>{r.short}</span>
-                  <span style={{color:'#555555'}}>{r.long}</span>
-                </div>
-              ))}
-            </div>
-            {smallTown[0] && (
-              <div style={{padding:'12px',border:'0.5px solid #e5e5e5',borderRadius:'6px',marginBottom:'16px'}}>
-                <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'#555555',marginBottom:'5px'}}>Latest commentary</div>
-                <div style={{fontSize:'12px',color:'#222222',lineHeight:'1.5'}}>{smallTown[0].headline}</div>
-              </div>
-            )}
-            <div style={{fontSize:'13px',fontWeight:'500',paddingLeft:'6px'}}>Enter →</div>
-          </div>
-        </Link>
       </div>
 
-      {articles.length > 0 && (
-        <section style={{padding:'24px',borderBottom:'0.5px solid #e5e5e5'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px'}}>
-            <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#555555'}}>Latest Intelligence</div>
-            <Link href="/archive" style={{fontSize:'12px',color:'#222222',textDecoration:'underline'}}>View all →</Link>
+      <div style={{display:'grid',gridTemplateColumns:'188px 1fr 172px',minHeight:'600px'}}>
+
+        <div style={{borderRight:`0.5px solid ${BD}`}}>
+          <div style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Location</div>
+            {[
+              {label:'San Francisco',tag:'Metro'},
+              {label:'Oakland',tag:'Metro'},
+              {label:'San Jose',tag:'Metro'},
+              {label:'Surrounding cities',tag:'->'},
+              {label:'Small towns',tag:'->'},
+              {label:'Counties',tag:'->'},
+            ].map(item => (
+              <div key={item.label} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:`0.5px solid ${BD}`,cursor:'pointer'}}>
+                <span style={{fontSize:'12px',color:TX3}}>{item.label}</span>
+                <span style={{fontSize:'10px',padding:'1px 5px',borderRadius:'3px',background:item.tag==='Metro'?TL:BG,color:item.tag==='Metro'?TD:TX4}}>{item.tag}</span>
+              </div>
+            ))}
           </div>
-          {articles.slice(0,6).map(article => {
-            const r = article.type === 'BIG CITY' ? R.story : R.feeling;
-            return (
-              <Link key={article.id} href={`/analysis/${article.slug}`} style={{textDecoration:'none',color:'inherit'}}>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'11px 0',borderBottom:'0.5px solid #f5f5f5'}}>
-                  <div style={{display:'flex',alignItems:'center',gap:'10px',flex:1,minWidth:0}}>
-                    <div style={{width:'5px',height:'5px',borderRadius:'50%',flexShrink:0,background:r.color}}></div>
-                    <span style={{fontSize:'10px',fontWeight:'500',padding:'1px 6px',borderRadius:'3px',flexShrink:0,background:r.light,color:r.dark}}>{article.type}</span>
-                    <span style={{fontSize:'15px',fontFamily:'Georgia,serif',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:'#121212',fontWeight:'400'}}>{article.headline}</span>
-                  </div>
-                  <div style={{display:'flex',alignItems:'center',gap:'10px',flexShrink:0,marginLeft:'12px'}}>
-                    <span style={{fontSize:'11px',fontWeight:'500',color:r.color}}>{article.score}/10</span>
-                    <span style={{fontSize:'11px',color:'#d4d4d4'}}>{article.date}</span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </section>
-      )}
+          <div style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Signal categories</div>
+            {[
+              {label:'Water + Environment',val:'10'},
+              {label:'Housing + Policy',val:'9'},
+              {label:'Economy + Markets',val:'8'},
+              {label:'Safety + Emergency',val:'7'},
+              {label:'Community + Health',val:'6'},
+            ].map(item => (
+              <div key={item.label} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:`0.5px solid ${BD}`,cursor:'pointer'}}>
+                <span style={{fontSize:'12px',color:TX3}}>{item.label}</span>
+                <ScoreBadge val={item.val} />
+              </div>
+            ))}
+          </div>
+          <div style={{padding:'12px 14px'}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Entity type</div>
+            {['Government','Business','Publications','Community orgs'].map(item => (
+              <div key={item} style={{fontSize:'12px',color:TX3,padding:'5px 0',borderBottom:`0.5px solid ${BD}`,cursor:'pointer'}}>{item}</div>
+            ))}
+          </div>
+        </div>
 
-      <section style={{padding:'28px 24px',background:'#FAFAFA',borderBottom:'0.5px solid #e5e5e5'}}>
-        <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#555555',marginBottom:'20px'}}>Editorial DNA</div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'20px',marginBottom:'20px'}}>
-          {[
-            {...R.story, body:'Facts, data, events, sources. What can be verified and reported.'},
-            {...R.feeling, body:'Who absorbs the impact. What it costs in human terms. How it feels.'},
-            {...R.response, body:'Community action. Collective strength. What comes next together.'}
-          ].map(r => (
-            <div key={r.short} style={{borderLeft:`2px solid ${r.color}`,paddingLeft:'14px'}}>
-              <div style={{fontSize:'13px',fontWeight:'500',marginBottom:'3px'}}>{r.short}</div>
-              <div style={{fontSize:'13px',color:'#222222',fontStyle:'italic',fontFamily:'Georgia,serif',marginBottom:'6px'}}>{r.long}</div>
-              <div style={{fontSize:'11px',color:'#555555',lineHeight:'1.6'}}>{r.body}</div>
+        <div>
+          <div style={{borderBottom:`0.5px solid ${BD}`}}>
+            <PillarHeader color={T} title="News - Signals" sub={`Top ${Math.min(5,articles.length)} today`} link="View all signals" href="/archive" />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
+              {top5.map((a, i) => (
+                <Link key={a.id} href={`/analysis/${a.slug}`} style={{textDecoration:'none',color:'inherit'}}>
+                  <div style={{padding:'11px 14px',borderBottom:`0.5px solid ${BD}`,borderRight:i%2===0?`0.5px solid ${BD}`:'none',cursor:'pointer'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'4px'}}>
+                      <span style={{color:T,fontWeight:500,fontSize:'10px'}}>#{i+1}</span>
+                      <span style={{fontSize:'11px',color:TX4}}>{a.type}</span>
+                      <ScoreBadge val={a.score} />
+                    </div>
+                    <div style={{fontSize:'13px',fontFamily:'Georgia,serif',lineHeight:'1.4',color:TX,marginBottom:'4px'}}>{a.headline}</div>
+                    <div style={{fontSize:'11px',color:TX4}}>{a.date}</div>
+                  </div>
+                </Link>
+              ))}
+              <div style={{padding:'11px 14px',background:BG,borderBottom:`0.5px solid ${BD}`}}>
+                <div style={{fontSize:'11px',color:TX4,marginBottom:'4px'}}>Your publication</div>
+                <div style={{fontSize:'13px',fontFamily:'Georgia,serif',color:TX4,fontStyle:'italic',marginBottom:'6px'}}>Register your local publication to be ranked here</div>
+                <Link href="/about" style={{fontSize:'11px',color:T,textDecoration:'none'}}>Register now</Link>
+              </div>
             </div>
-          ))}
-        </div>
-        <div style={{fontSize:'13px',fontStyle:'italic',color:'#555555',fontFamily:'Georgia,serif',paddingTop:'16px',borderTop:'0.5px solid #e5e5e5'}}>
-          &ldquo;Technology is a tool. Community is the outcome. People are the destination.&rdquo; — Etherom
-        </div>
-      </section>
+          </div>
 
-      <footer style={{padding:'16px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:'11px',color:'#555555'}}>Z-Factors · Community Portal · Part of Etherom</span>
+          <div style={{borderBottom:`0.5px solid ${BD}`}}>
+            <PillarHeader color={P} title="Government - Services" link="View all agencies" href="https://z-factoring.com" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
+              {[
+                {name:'City Hall',sig:'7',bg:PL},
+                {name:'Police Dept',sig:'8',bg:'#FCEBEB'},
+                {name:'Fire Dept',sig:'9',bg:AL},
+                {name:'Food Banks',sig:'9',bg:TL},
+                {name:'Animal Shelter',sig:'6',bg:'#FBEAF0'},
+                {name:'Health Services',sig:'7',bg:'#E6F1FB'},
+                {name:'Public Works',sig:'8',bg:'#EAF3DE'},
+                {name:'Schools',sig:'8',bg:PL},
+              ].map((g, i) => (
+                <div key={g.name} style={{padding:'12px 14px',borderRight:i%4<3?`0.5px solid ${BD}`:'none',borderBottom:`0.5px solid ${BD}`,cursor:'pointer'}}>
+                  <div style={{width:'28px',height:'28px',borderRadius:'6px',background:g.bg,marginBottom:'7px'}}></div>
+                  <div style={{fontSize:'12px',fontWeight:500,color:TX,marginBottom:'2px'}}>{g.name}</div>
+                  <div style={{fontSize:'10px',color:TX4}}>Signal <ScoreBadge val={g.sig} /></div>
+                </div>
+              ))}
+            </div>
+            <a href="https://z-factoring.com" style={{display:'block',margin:'10px 16px',padding:'7px 12px',border:`0.5px solid ${P}`,borderRadius:'6px',fontSize:'11px',color:P,textAlign:'center',textDecoration:'none'}}>Is your agency listed? Apply for Z-Factoring access</a>
+          </div>
+
+          <div style={{borderBottom:`0.5px solid ${BD}`}}>
+            <PillarHeader color={A} title="Business - Directory" sub="Ranked by signal" link="View all businesses" href="https://geobond.app" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)'}}>
+              {[
+                {cat:'Restaurants',sig:'8',bar:85,color:T,status:'Food cost: HIGH'},
+                {cat:'Real estate',sig:'7',bar:75,color:P,status:'Policy: RISING'},
+                {cat:'Banks',sig:'6',bar:65,color:A,status:'Rate: WATCH'},
+                {cat:'Insurance',sig:'9',bar:90,color:'#E24B4A',status:'Home: CRITICAL'},
+                {cat:'Healthcare',sig:'8',bar:80,color:T,status:'Demand: HIGH'},
+                {cat:'Professional',sig:'6',bar:60,color:P,status:'Regulatory: MED'},
+              ].map((b, i) => (
+                <div key={b.cat} style={{padding:'12px 14px',borderRight:i%3<2?`0.5px solid ${BD}`:'none',borderBottom:`0.5px solid ${BD}`,cursor:'pointer'}}>
+                  <div style={{fontSize:'10px',color:TX4,marginBottom:'4px'}}>{b.cat}</div>
+                  <div style={{fontSize:'12px',fontWeight:500,color:TX,marginBottom:'2px'}}>Top 5 near you</div>
+                  <div style={{fontSize:'11px',color:TX4,marginBottom:'5px'}}>{b.status}</div>
+                  <div style={{height:'2px',borderRadius:'1px',background:BD,marginBottom:'3px'}}>
+                    <div style={{height:'2px',borderRadius:'1px',background:b.color,width:`${b.bar}%`}}></div>
+                  </div>
+                  <div style={{fontSize:'10px',color:b.color}}>Signal {b.sig}/10</div>
+                </div>
+              ))}
+            </div>
+            <a href="https://geobond.app" style={{display:'block',margin:'10px 16px',padding:'7px 12px',border:`0.5px solid ${A}`,borderRadius:'6px',fontSize:'11px',color:A,textAlign:'center',textDecoration:'none'}}>Get your business ranked here - Apply for GeoBond</a>
+          </div>
+
+          <div>
+            <PillarHeader color={BL} title="Entertainment - Events" link="View all events" href="/archive" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
+              {[
+                {cat:'Sports',name:"Warriors - Giants - A's",meta:'Tickets + scores + signals'},
+                {cat:'Concerts',name:'This week near you',meta:'3 events - Bay Area'},
+                {cat:'Casino - Gaming',name:'Local venues ranked',meta:'Signal + deals + events'},
+                {cat:'Community events',name:'Festivals - markets',meta:'5 events this week'},
+              ].map((e, i) => (
+                <div key={e.cat} style={{padding:'12px 14px',borderRight:i<3?`0.5px solid ${BD}`:'none',cursor:'pointer'}}>
+                  <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:TX4,marginBottom:'4px'}}>{e.cat}</div>
+                  <div style={{fontSize:'12px',fontWeight:500,color:TX,marginBottom:'2px'}}>{e.name}</div>
+                  <div style={{fontSize:'11px',color:TX4}}>{e.meta}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{borderLeft:`0.5px solid ${BD}`}}>
+          <div style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Today signals</div>
+            {[
+              {label:'Water - Bay Area',val:'10',trend:'+',c:T},
+              {label:'Aquifer - AZ',val:'10',trend:'+',c:T},
+              {label:'Wild horses - NV',val:'9',trend:'+',c:A},
+              {label:'Insurance - CA',val:'9',trend:'+',c:'#E24B4A'},
+              {label:'Schools - Oakland',val:'8',trend:'=',c:A},
+              {label:'Boeing - Safety',val:'8',trend:'+',c:A},
+            ].map(item => (
+              <div key={item.label} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:`0.5px solid ${BD}`,fontSize:'11px'}}>
+                <span style={{color:TX3}}>{item.label}</span>
+                <span style={{fontWeight:500,color:item.c}}>{item.val} {item.trend}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Trending entities</div>
+            {[
+              {name:'SFPUC',val:'12 signals'},
+              {name:'Oakland USD',val:'8 signals'},
+              {name:'Fed Reserve',val:'7 signals'},
+              {name:'CA FAIR Plan',val:'6 signals'},
+              {name:'BLM Nevada',val:'5 signals'},
+            ].map(item => (
+              <div key={item.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:`0.5px solid ${BD}`,fontSize:'11px'}}>
+                <span style={{color:TX3}}>{item.name}</span>
+                <span style={{fontWeight:500,color:TX}}>{item.val}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Publications</div>
+            {[
+              {name:'SF Chronicle',val:'10/10',c:T},
+              {name:'AP News',val:'10/10',c:T},
+              {name:'Reuters',val:'9/10',c:A},
+              {name:'East Bay Times',val:'8/10',c:A},
+              {name:'Oaklandside',val:'8/10',c:A},
+            ].map(item => (
+              <div key={item.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:`0.5px solid ${BD}`,fontSize:'11px'}}>
+                <span style={{color:TX3}}>{item.name}</span>
+                <span style={{fontWeight:500,color:item.c}}>{item.val}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:'12px 14px'}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.14em',textTransform:'uppercase',color:TX4,marginBottom:'10px'}}>Platform access</div>
+            <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+              <a href="https://z-factoring.com" style={{padding:'8px',border:`0.5px solid ${P}`,borderRadius:'6px',fontSize:'11px',color:P,textAlign:'center',textDecoration:'none'}}>Government access</a>
+              <a href="https://geobond.app" style={{padding:'8px',border:`0.5px solid ${A}`,borderRadius:'6px',fontSize:'11px',color:A,textAlign:'center',textDecoration:'none'}}>Business access</a>
+              <Link href="/about" style={{padding:'8px',border:`0.5px solid ${T}`,borderRadius:'6px',fontSize:'11px',color:T,textAlign:'center',textDecoration:'none',display:'block'}}>Register publication</Link>
+              <Link href="/contact" style={{padding:'8px',border:`0.5px solid ${BD}`,borderRadius:'6px',fontSize:'11px',color:TX4,textAlign:'center',textDecoration:'none',display:'block'}}>Submit a signal</Link>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer style={{padding:'14px 20px',borderTop:`0.5px solid ${BD}`,display:'flex',justifyContent:'space-between',alignItems:'center',background:BG}}>
+        <span style={{fontSize:'11px',color:TX4}}>Z-Factors - Community Portal - Part of Etherom</span>
         <div style={{display:'flex',gap:'16px',fontSize:'11px'}}>
-          <Link href="/archive" style={{color:'#555555',textDecoration:'none'}}>Archive</Link>
-          <Link href="/about" style={{color:'#555555',textDecoration:'none'}}>About</Link>
-          <Link href="/privacy" style={{color:'#555555',textDecoration:'none'}}>Privacy</Link>
+          <Link href="/archive" style={{color:TX4,textDecoration:'none'}}>Archive</Link>
+          <Link href="/about" style={{color:TX4,textDecoration:'none'}}>About</Link>
+          <Link href="/contact" style={{color:TX4,textDecoration:'none'}}>Contact</Link>
+          <a href="https://z-factoring.com" style={{color:TX4,textDecoration:'none'}}>Z-Factoring</a>
+          <a href="https://geobond.app" style={{color:TX4,textDecoration:'none'}}>GeoBond</a>
+          <a href="https://etherom.com" style={{color:TX4,textDecoration:'none'}}>Etherom</a>
         </div>
       </footer>
 
