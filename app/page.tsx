@@ -45,15 +45,15 @@ function ScoreBadge({ val }: { val: string }) {
   return <span style={{fontSize:'10px',fontWeight:500,padding:'1px 6px',borderRadius:'3px',background:bg,color:'#fff',display:'inline-block'}}>{val}/10</span>;
 }
 
-function PillarHeader({ color, title, sub, link, href }: { color:string, title:string, sub?:string, link:string, href:string }) {
+function PillarHeader({ color, title, sub, link, href, headerBg }: { color:string, title:string, sub?:string, link:string, href:string, headerBg:string }) {
   return (
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 16px',background:BG,borderBottom:`0.5px solid ${BD}`}}>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 16px',background:headerBg,borderBottom:`0.5px solid ${BD}`,borderLeft:`3px solid ${color}`}}>
       <div style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px',fontWeight:500}}>
         <div style={{width:'6px',height:'6px',borderRadius:'50%',background:color}}></div>
         {title}
-        {sub && <span style={{fontSize:'10px',padding:'1px 6px',background:TL,color:TD,borderRadius:'3px'}}>{sub}</span>}
+        {sub && <span style={{fontSize:'10px',padding:'1px 6px',background:'rgba(255,255,255,0.7)',color:color,borderRadius:'3px',fontWeight:500}}>{sub}</span>}
       </div>
-      <a href={href} style={{fontSize:'11px',color:color,textDecoration:'none'}}>{link}</a>
+      <a href={href} style={{fontSize:'11px',color:color,textDecoration:'none',fontWeight:500}}>{link}</a>
     </div>
   );
 }
@@ -154,8 +154,8 @@ export default function HomePage() {
 
         <div>
           <div style={{borderBottom:`0.5px solid ${BD}`}}>
-            <PillarHeader color={T} title="News - Signals" sub={`Top ${Math.min(5,articles.length)} today`} link="View all signals" href="/archive" />
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
+            <PillarHeader color={T} title="News - Signals" sub={`Top ${Math.min(5,articles.length)} today`} link="View all signals" href="/archive" headerBg="#E1F5EE" />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',background:'#fff'}}>
               {top5.map((a, i) => (
                 <Link key={a.id} href={`/analysis/${a.slug}`} style={{textDecoration:'none',color:'inherit'}}>
                   <div style={{padding:'11px 14px',borderBottom:`0.5px solid ${BD}`,borderRight:i%2===0?`0.5px solid ${BD}`:'none',cursor:'pointer'}}>
@@ -178,8 +178,8 @@ export default function HomePage() {
           </div>
 
           <div style={{borderBottom:`0.5px solid ${BD}`}}>
-            <PillarHeader color={P} title="Government - Services" link="View all agencies" href="https://z-factoring.com" />
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
+            <PillarHeader color={P} title="Government - Services" link="View all agencies" href="https://z-factoring.com" headerBg="#EEEDFE" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',background:'#FAFAFA'}}>
               {[
                 {name:'City Hall',sig:'7',bg:PL},
                 {name:'Police Dept',sig:'8',bg:'#FCEBEB'},
@@ -201,8 +201,8 @@ export default function HomePage() {
           </div>
 
           <div style={{borderBottom:`0.5px solid ${BD}`}}>
-            <PillarHeader color={A} title="Business - Directory" sub="Ranked by signal" link="View all businesses" href="https://geobond.app" />
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)'}}>
+            <PillarHeader color={A} title="Business - Directory" sub="Ranked by signal" link="View all businesses" href="https://geobond.app" headerBg="#FAEEDA" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',background:'#fff'}}>
               {[
                 {cat:'Restaurants',sig:'8',bar:85,color:T,status:'Food cost: HIGH'},
                 {cat:'Real estate',sig:'7',bar:75,color:P,status:'Policy: RISING'},
@@ -226,8 +226,8 @@ export default function HomePage() {
           </div>
 
           <div>
-            <PillarHeader color={BL} title="Entertainment - Events" link="View all events" href="/archive" />
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
+            <PillarHeader color={BL} title="Entertainment - Events" link="View all events" href="/archive" headerBg="#E6F1FB" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',background:'#FAFAFA'}}>
               {[
                 {cat:'Sports signals',name:'Warriors home game tonight',meta:'Foot traffic signal: HIGH - businesses near Chase Center',sig:'9'},
                 {cat:'Concert signals',name:'3 concerts this week Bay Area',meta:'Venue district signal: RISING - nearby business alert',sig:'8'},
