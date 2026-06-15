@@ -229,15 +229,18 @@ export default function HomePage() {
             <PillarHeader color={BL} title="Entertainment - Events" link="View all events" href="/archive" />
             <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
               {[
-                {cat:'Sports',name:"Warriors - Giants - A's",meta:'Tickets + scores + signals'},
-                {cat:'Concerts',name:'This week near you',meta:'3 events - Bay Area'},
-                {cat:'Casino - Gaming',name:'Local venues ranked',meta:'Signal + deals + events'},
-                {cat:'Community events',name:'Festivals - markets',meta:'5 events this week'},
+                {cat:'Sports signals',name:'Warriors home game tonight',meta:'Foot traffic signal: HIGH - businesses near Chase Center',sig:'9'},
+                {cat:'Concert signals',name:'3 concerts this week Bay Area',meta:'Venue district signal: RISING - nearby business alert',sig:'8'},
+                {cat:'Casino signals',name:'Local casino events this week',meta:'Demand signal: HIGH - parking + dining alert',sig:'7'},
+                {cat:'Community signals',name:'5 community events this week',meta:'Government + business signal: ACTIVE - post your notice',sig:'8'},
               ].map((e, i) => (
                 <div key={e.cat} style={{padding:'12px 14px',borderRight:i<3?`0.5px solid ${BD}`:'none',cursor:'pointer'}}>
-                  <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:TX4,marginBottom:'4px'}}>{e.cat}</div>
-                  <div style={{fontSize:'12px',fontWeight:500,color:TX,marginBottom:'2px'}}>{e.name}</div>
-                  <div style={{fontSize:'11px',color:TX4}}>{e.meta}</div>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
+                    <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:TX4}}>{e.cat}</div>
+                    <ScoreBadge val={e.sig} />
+                  </div>
+                  <div style={{fontSize:'12px',fontWeight:500,color:TX,marginBottom:'3px'}}>{e.name}</div>
+                  <div style={{fontSize:'11px',color:TX4,lineHeight:'1.5'}}>{e.meta}</div>
                 </div>
               ))}
             </div>
