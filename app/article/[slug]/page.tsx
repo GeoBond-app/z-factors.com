@@ -72,9 +72,24 @@ export default function ArticlePage() {
         <h1 style={{ fontSize: '22px', fontWeight: 600, lineHeight: 1.3, marginBottom: '10px' }}>{article.headline}</h1>
         {article.subheadline && <p style={{ fontSize: '14px', opacity: 0.6, lineHeight: 1.6, marginBottom: '20px' }}>{article.subheadline}</p>}
 
-        {/* Track 1 */}
-        <div style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '12px', opacity: 0.7 }}>The News</div>
-        {paras.map((p: string, i: number) => (
+        {/* Perspective 1A */}
+        <div style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '8px', opacity: 0.7 }}>Who Wins · Who Loses</div>
+        {article.perspective_1a_wins_loses ? (
+          <p style={{ fontSize: '15px', lineHeight: 1.8, marginBottom: '20px', opacity: 0.85 }}>{article.perspective_1a_wins_loses}</p>
+        ) : paras[0] ? (
+          <p style={{ fontSize: '15px', lineHeight: 1.8, marginBottom: '20px', opacity: 0.85 }}>{paras[0]}</p>
+        ) : null}
+
+        {/* Perspective 1B */}
+        <div style={{ fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '8px', opacity: 0.7 }}>The Average Person</div>
+        {article.perspective_1b_average_person ? (
+          <p style={{ fontSize: '15px', lineHeight: 1.8, marginBottom: '20px', opacity: 0.85 }}>{article.perspective_1b_average_person}</p>
+        ) : paras[1] ? (
+          <p style={{ fontSize: '15px', lineHeight: 1.8, marginBottom: '20px', opacity: 0.85 }}>{paras[1]}</p>
+        ) : null}
+
+        {/* Remaining paragraphs */}
+        {paras.slice(2).map((p: string, i: number) => (
           <p key={i} style={{ fontSize: '15px', lineHeight: 1.8, marginBottom: '14px', opacity: 0.85 }}>{p}</p>
         ))}
 
