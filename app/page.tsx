@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ? createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+) : null;
 
 const SECTIONS = [
   { id: 'all', label: 'All Signals' },
@@ -45,6 +45,7 @@ export default function HomePage() {
 
   useEffect(() => {
     async function load() {
+      if (!supabase) { setLoading(false); return; }
       const { data } = await supabase
         .from('articles')
         .select('*')

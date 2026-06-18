@@ -4,10 +4,10 @@ import { createClient } from '@supabase/supabase-js';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ? createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+) : null;
 
 function slugify(str: string) {
   return (str || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').slice(0, 80).replace(/-$/, '');
@@ -22,6 +22,7 @@ export default function ArticlePage() {
 
   useEffect(() => {
     async function load() {
+      if (!supabase) { setLoading(false); return; }
       const { data } = await supabase
         .from('articles')
         .select('*')
