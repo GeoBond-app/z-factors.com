@@ -93,26 +93,26 @@ const REGIONS: Record<string,{x:number;y:number;w:number;h:number;signals:number
   'South':            {x:265,y:170,w:115,h:75, signals:3},
 };
 
-const DOTS: Array<{name:string;x:number;y:number;dur:string}> = [
-  {name:'San Francisco', x:68,  y:128, dur:'2.0s'},
-  {name:'Los Angeles',   x:82,  y:158, dur:'2.4s'},
-  {name:'Seattle',       x:75,  y:78,  dur:'1.8s'},
-  {name:'Portland',      x:72,  y:95,  dur:'2.6s'},
-  {name:'Phoenix',       x:128, y:168, dur:'3.0s'},
-  {name:'Denver',        x:195, y:138, dur:'2.2s'},
-  {name:'Chicago',       x:298, y:108, dur:'1.9s'},
-  {name:'Detroit',       x:318, y:98,  dur:'2.7s'},
-  {name:'New York City', x:388, y:102, dur:'2.1s'},
-  {name:'Washington DC', x:372, y:128, dur:'2.5s'},
-  {name:'Boston',        x:408, y:88,  dur:'1.7s'},
-  {name:'Houston',       x:250, y:208, dur:'2.9s'},
-  {name:'Dallas',        x:238, y:188, dur:'2.3s'},
-  {name:'Miami',         x:352, y:238, dur:'2.8s'},
-  {name:'Atlanta',       x:330, y:188, dur:'3.1s'},
+const DOTS = [
+  {name:'San Francisco', x:68,  y:128, delay:'0.0s'},
+  {name:'Los Angeles',   x:82,  y:158, delay:'0.3s'},
+  {name:'Seattle',       x:75,  y:78,  delay:'0.6s'},
+  {name:'Portland',      x:72,  y:95,  delay:'0.9s'},
+  {name:'Phoenix',       x:128, y:168, delay:'1.2s'},
+  {name:'Denver',        x:195, y:138, delay:'0.4s'},
+  {name:'Chicago',       x:298, y:108, delay:'0.7s'},
+  {name:'Detroit',       x:318, y:98,  delay:'1.0s'},
+  {name:'New York City', x:388, y:102, delay:'0.2s'},
+  {name:'Washington DC', x:372, y:128, delay:'0.5s'},
+  {name:'Boston',        x:408, y:88,  delay:'0.8s'},
+  {name:'Houston',       x:250, y:208, delay:'1.1s'},
+  {name:'Dallas',        x:238, y:188, delay:'1.4s'},
+  {name:'Miami',         x:352, y:238, delay:'1.3s'},
+  {name:'Atlanta',       x:330, y:188, delay:'0.1s'},
 ];
 
 type Level = 'us'|'region'|'city';
-const G  = '#1D9E75';
+const G = '#1D9E75';
 const eb: React.CSSProperties = {fontSize:'10px',letterSpacing:'.12em',color:'rgba(242,242,240,.35)',textTransform:'uppercase' as const};
 const inp: React.CSSProperties = {width:'100%',background:'rgba(242,242,240,.05)',border:'0.5px solid rgba(242,242,240,.15)',borderRadius:'8px',color:'#F2F2F0',fontFamily:'system-ui',fontSize:'13px',padding:'8px 10px'};
 
@@ -141,6 +141,12 @@ export default function GeoPortal() {
 
   return (
     <section style={{marginBottom:'20px'}}>
+      <style>{`
+        @keyframes geopulse {
+          0%,100% { opacity:0.8; r:2.5; }
+          50%      { opacity:0.2; r:5;   }
+        }
+      `}</style>
 
       <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px',flexWrap:'wrap'}}>
         <span style={eb}>§2 · Local news portal · geographic</span>
@@ -173,20 +179,25 @@ export default function GeoPortal() {
 
               {Object.entries(REGIONS).map(([name,pos])=>(
                 <g key={name} onClick={()=>drillRegion(name)} style={{cursor:'pointer'}}>
-                  <rect x={pos.x} y={pos.y} width={pos.w} height={pos.h} rx="4" fill="rgba(29,158,117,.05)" stroke="rgba(29,158,117,.2)" strokeWidth="0.5"/>
+                  <rect x={pos.x} y={pos.y} width={pos.w} height={pos.h} rx="4"
+                    fill="rgba(29,158,117,.05)" stroke="rgba(29,158,117,.2)" strokeWidth="0.5"/>
                   <text x={pos.x+pos.w/2} y={pos.y+pos.h/2-6} textAnchor="middle" fontSize="9" fill="rgba(29,158,117,.8)" fontFamily="system-ui">{name}</text>
                   <text x={pos.x+pos.w/2} y={pos.y+pos.h/2+7} textAnchor="middle" fontSize="8" fill="rgba(29,158,117,.5)" fontFamily="system-ui">{pos.signals} signals ›</text>
                 </g>
               ))}
 
               {DOTS.map(dot=>(
-                <g key={dot.name}>
-                  <circle cx={dot.x} cy={dot.y} r="3" fill={G} opacity="0.5">
-                    <animate attributeName="r"       values="2;5;2"     dur={dot.dur} repeatCount="indefinite" begin={dot.dur}/>
-                    <animate attributeName="opacity" values="0.5;0.1;0.5" dur={dot.dur} repeatCount="indefinite" begin={dot.dur}/>
-                  </circle>
-                  <circle cx={dot.x} cy={dot.y} r="2.5" fill={G} opacity="0.9"/>
-                </g>
+                <circle
+                  key={dot.name}
+                  cx={dot.x}
+                  cy={dot.y}
+                  r="3"
+                  fill={G}
+                  style={{
+                    animation:`geopulse 2s ease-in-out infinite`,
+                    animationDelay: dot.delay,
+                  }}
+                />
               ))}
 
               <text x="52" y="260" fontSize="8" fill="rgba(242,242,240,.3)" fontFamily="system-ui">● live signals · click region · AR layer → GeoBond</text>
@@ -207,7 +218,8 @@ export default function GeoPortal() {
             <div style={{fontSize:'13px',fontWeight:500,marginBottom:'10px'}}>Select a city in {region}</div>
             <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:'8px'}}>
               {cities.map(c=>(
-                <button key={c.name} onClick={()=>drillCity(c)} style={{padding:'10px 12px',borderRadius:'10px',border:'0.5px solid rgba(242,242,240,.12)',background:'rgba(242,242,240,.03)',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const}}>
+                <button key={c.name} onClick={()=>drillCity(c)}
+                  style={{padding:'10px 12px',borderRadius:'10px',border:'0.5px solid rgba(242,242,240,.12)',background:'rgba(242,242,240,.03)',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const}}>
                   <div style={{display:'flex',alignItems:'center',gap:'7px',marginBottom:'4px'}}>
                     <span style={{width:'7px',height:'7px',borderRadius:'50%',background:G,display:'inline-block',flexShrink:0}}/>
                     <span style={{fontSize:'13px',fontWeight:500,color:'#F2F2F0'}}>{c.name}, {c.state}</span>
