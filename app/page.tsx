@@ -1,5 +1,5 @@
+cat > app/page.tsx << 'ENDOFFILE'
 'use client';
-import GeoPortal from './_components/GeoPortal';
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
@@ -127,9 +127,6 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* Local Portal */}
-      <GeoPortal />
-
       {/* Articles */}
       <div style={{ padding: '16px 20px' }}>
         {loading && (
@@ -237,3 +234,4 @@ export default function HomePage() {
     </main>
   );
 }
+ENDOFFILE
