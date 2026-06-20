@@ -85,85 +85,85 @@ const DATA: Record<string,Region> = {
     ]},
 };
 
-const REGION_POSITIONS: Record<string,{x:number;y:number;w:number;h:number;signals:number}> = {
-  'West Coast':       { x:52,  y:58,  w:100, h:160, signals:9  },
-  'Mountain & Texas': { x:155, y:100, w:110, h:140, signals:4  },
-  'Midwest':          { x:230, y:75,  w:100, h:110, signals:3  },
-  'Northeast':        { x:355, y:60,  w:80,  h:80,  signals:10 },
-  'South':            { x:265, y:170, w:115, h:75,  signals:3  },
+const REGIONS: Record<string,{x:number;y:number;w:number;h:number;signals:number}> = {
+  'West Coast':       {x:52, y:58, w:100,h:160,signals:9},
+  'Mountain & Texas': {x:155,y:100,w:110,h:140,signals:4},
+  'Midwest':          {x:230,y:75, w:100,h:110,signals:3},
+  'Northeast':        {x:355,y:60, w:80, h:80, signals:10},
+  'South':            {x:265,y:170,w:115,h:75, signals:3},
 };
 
-const DOT_POSITIONS: Record<string,{x:number;y:number}> = {
-  'San Francisco':{ x:68,  y:128 }, 'Los Angeles':   { x:82,  y:158 },
-  'Seattle':      { x:75,  y:78  }, 'Portland':      { x:72,  y:95  },
-  'Phoenix':      { x:128, y:168 }, 'Denver':        { x:195, y:138 },
-  'Chicago':      { x:298, y:108 }, 'Detroit':       { x:318, y:98  },
-  'New York City':{ x:388, y:102 }, 'Washington DC': { x:372, y:128 },
-  'Boston':       { x:408, y:88  }, 'Houston':       { x:250, y:208 },
-  'Dallas':       { x:238, y:188 }, 'Miami':         { x:352, y:238 },
-  'Atlanta':      { x:330, y:188 },
-};
+const DOTS: Array<{name:string;x:number;y:number;dur:string}> = [
+  {name:'San Francisco', x:68,  y:128, dur:'2.0s'},
+  {name:'Los Angeles',   x:82,  y:158, dur:'2.4s'},
+  {name:'Seattle',       x:75,  y:78,  dur:'1.8s'},
+  {name:'Portland',      x:72,  y:95,  dur:'2.6s'},
+  {name:'Phoenix',       x:128, y:168, dur:'3.0s'},
+  {name:'Denver',        x:195, y:138, dur:'2.2s'},
+  {name:'Chicago',       x:298, y:108, dur:'1.9s'},
+  {name:'Detroit',       x:318, y:98,  dur:'2.7s'},
+  {name:'New York City', x:388, y:102, dur:'2.1s'},
+  {name:'Washington DC', x:372, y:128, dur:'2.5s'},
+  {name:'Boston',        x:408, y:88,  dur:'1.7s'},
+  {name:'Houston',       x:250, y:208, dur:'2.9s'},
+  {name:'Dallas',        x:238, y:188, dur:'2.3s'},
+  {name:'Miami',         x:352, y:238, dur:'2.8s'},
+  {name:'Atlanta',       x:330, y:188, dur:'3.1s'},
+];
 
-type Level = 'us' | 'region' | 'city';
-const G = '#1D9E75';
-const eb: React.CSSProperties = { fontSize:'10px', letterSpacing:'.12em', color:'rgba(242,242,240,.35)', textTransform:'uppercase' as const };
-const inp: React.CSSProperties = { width:'100%', background:'rgba(242,242,240,.05)', border:'0.5px solid rgba(242,242,240,.15)', borderRadius:'8px', color:'#F2F2F0', fontFamily:'system-ui', fontSize:'13px', padding:'8px 10px' };
+type Level = 'us'|'region'|'city';
+const G  = '#1D9E75';
+const eb: React.CSSProperties = {fontSize:'10px',letterSpacing:'.12em',color:'rgba(242,242,240,.35)',textTransform:'uppercase' as const};
+const inp: React.CSSProperties = {width:'100%',background:'rgba(242,242,240,.05)',border:'0.5px solid rgba(242,242,240,.15)',borderRadius:'8px',color:'#F2F2F0',fontFamily:'system-ui',fontSize:'13px',padding:'8px 10px'};
 
 export default function GeoPortal() {
-  const [level,      setLevel]      = useState<Level>('us');
-  const [region,     setRegion]     = useState('');
-  const [city,       setCity]       = useState<City|null>(null);
-  const [showAdd,    setShowAdd]    = useState(false);
-  const [newCity,    setNewCity]    = useState('');
-  const [newUrl,     setNewUrl]     = useState('');
-  const [addedMsg,   setAddedMsg]   = useState('');
+  const [level,    setLevel]    = useState<Level>('us');
+  const [region,   setRegion]   = useState('');
+  const [city,     setCity]     = useState<City|null>(null);
+  const [showAdd,  setShowAdd]  = useState(false);
+  const [newCity,  setNewCity]  = useState('');
+  const [newUrl,   setNewUrl]   = useState('');
+  const [addedMsg, setAddedMsg] = useState('');
 
-  function drillRegion(r: string) { setRegion(r); setLevel('region'); }
-  function drillCity(c: City)     { setCity(c);   setLevel('city');   }
-  function backToUS()             { setLevel('us');     setRegion(''); setCity(null); }
-  function backToRegion()         { setLevel('region'); setCity(null); }
+  function drillRegion(r:string){setRegion(r);setLevel('region');}
+  function drillCity(c:City){setCity(c);setLevel('city');}
+  function backToUS(){setLevel('us');setRegion('');setCity(null);}
+  function backToRegion(){setLevel('region');setCity(null);}
 
-  function addSource() {
+  function addSource(){
     if(!newCity.trim()||!newUrl.trim()) return;
-    setAddedMsg(`✓ Added ${newUrl} for ${newCity}. Pipeline will Z-Factor local signals within 24 hours.`);
-    setNewCity(''); setNewUrl(''); setShowAdd(false);
+    setAddedMsg(`Added ${newUrl} for ${newCity}. Pipeline Z-Factors local signals within 24h.`);
+    setNewCity('');setNewUrl('');setShowAdd(false);
     setTimeout(()=>setAddedMsg(''),5000);
   }
 
   const cities = DATA[region]?.cities ?? [];
 
   return (
-    <section style={{ marginBottom:'20px' }}>
+    <section style={{marginBottom:'20px'}}>
 
-      {/* header */}
-      <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'12px', flexWrap:'wrap' }}>
+      <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px',flexWrap:'wrap'}}>
         <span style={eb}>§2 · Local news portal · geographic</span>
-        <span style={{ fontSize:'11px', color:G, background:'rgba(29,158,117,.1)', padding:'2px 8px', borderRadius:'999px', border:`0.5px solid rgba(29,158,117,.3)` }}>
-          GeoBond · AR ready
-        </span>
-        <button onClick={()=>setShowAdd(!showAdd)} style={{ marginLeft:'auto', fontSize:'11px', color:G, background:'none', border:`0.5px solid rgba(29,158,117,.3)`, borderRadius:'999px', padding:'2px 10px', cursor:'pointer', fontFamily:'inherit' }}>
-          + add your city
-        </button>
+        <span style={{fontSize:'11px',color:G,background:'rgba(29,158,117,.1)',padding:'2px 8px',borderRadius:'999px',border:`0.5px solid rgba(29,158,117,.3)`}}>GeoBond · AR ready</span>
+        <button onClick={()=>setShowAdd(!showAdd)} style={{marginLeft:'auto',fontSize:'11px',color:G,background:'none',border:`0.5px solid rgba(29,158,117,.3)`,borderRadius:'999px',padding:'2px 10px',cursor:'pointer',fontFamily:'inherit'}}>+ add your city</button>
       </div>
 
-      {/* breadcrumb */}
-      {level !== 'us' && (
-        <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'12px', fontSize:'12px', flexWrap:'wrap' }}>
-          <button onClick={backToUS} style={{ color:G, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit', fontSize:'12px' }}>🇺🇸 United States</button>
-          {level === 'region' && <><span style={{ color:'rgba(242,242,240,.35)' }}>›</span><span style={{ color:'#F2F2F0', fontWeight:500 }}>{region}</span></>}
-          {level === 'city'   && <><span style={{ color:'rgba(242,242,240,.35)' }}>›</span><button onClick={backToRegion} style={{ color:G, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit', fontSize:'12px' }}>{region}</button><span style={{ color:'rgba(242,242,240,.35)' }}>›</span><span style={{ color:'#F2F2F0', fontWeight:500 }}>{city?.name}</span></>}
+      {level!=='us'&&(
+        <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'12px',fontSize:'12px',flexWrap:'wrap'}}>
+          <button onClick={backToUS} style={{color:G,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'12px'}}>🇺🇸 United States</button>
+          {level==='region'&&<><span style={{color:'rgba(242,242,240,.35)'}}>›</span><span style={{color:'#F2F2F0',fontWeight:500}}>{region}</span></>}
+          {level==='city'&&<><span style={{color:'rgba(242,242,240,.35)'}}>›</span><button onClick={backToRegion} style={{color:G,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'12px'}}>{region}</button><span style={{color:'rgba(242,242,240,.35)'}}>›</span><span style={{color:'#F2F2F0',fontWeight:500}}>{city?.name}</span></>}
         </div>
       )}
 
-      {/* LEVEL US — map */}
-      {level === 'us' && (
-        <div style={{ border:'0.5px solid rgba(242,242,240,.1)', borderRadius:'12px', background:'rgba(242,242,240,.02)', overflow:'hidden' }}>
-          <div style={{ padding:'10px 14px', borderBottom:'0.5px solid rgba(242,242,240,.08)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-            <span style={{ fontSize:'13px', fontWeight:500 }}>United States</span>
-            <span style={{ fontSize:'11px', color:'rgba(242,242,240,.4)' }}>Click a region to drill in →</span>
+      {level==='us'&&(
+        <div style={{border:'0.5px solid rgba(242,242,240,.1)',borderRadius:'12px',background:'rgba(242,242,240,.02)',overflow:'hidden'}}>
+          <div style={{padding:'10px 14px',borderBottom:'0.5px solid rgba(242,242,240,.08)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <span style={{fontSize:'13px',fontWeight:500}}>United States</span>
+            <span style={{fontSize:'11px',color:'rgba(242,242,240,.4)'}}>Click a region to drill in →</span>
           </div>
-          <div style={{ padding:'8px 12px', background:'rgba(242,242,240,.02)' }}>
-            <svg viewBox="0 0 480 270" width="100%" role="img" aria-label="US map — click region to navigate">
+          <div style={{padding:'8px 12px'}}>
+            <svg viewBox="0 0 480 270" width="100%" role="img" aria-label="US map click region to navigate">
               <title>Z-Factors US local news map</title>
               <path d="M58,55 L415,55 L435,75 L445,115 L435,155 L415,195 L375,215 L335,225 L295,235 L255,240 L215,235 L175,225 L135,215 L95,195 L65,165 L50,135 L48,95 Z" fill="rgba(242,242,240,.03)" stroke="rgba(242,242,240,.1)" strokeWidth="1"/>
               <path d="M315,215 L335,225 L345,255 L335,268 L325,263 L315,250 L310,230 Z" fill="rgba(242,242,240,.03)" stroke="rgba(242,242,240,.1)" strokeWidth="1"/>
@@ -171,126 +171,108 @@ export default function GeoPortal() {
               <line x1="295" y1="55" x2="295" y2="235" stroke="rgba(242,242,240,.05)" strokeWidth="0.5"/>
               <line x1="48"  y1="148" x2="445" y2="148" stroke="rgba(242,242,240,.05)" strokeWidth="0.5"/>
 
-              {/* clickable region overlays */}
-              {Object.entries(REGION_POSITIONS).map(([name,pos]) => (
-                <g key={name} onClick={()=>drillRegion(name)} style={{ cursor:'pointer' }}>
-                  <rect x={pos.x} y={pos.y} width={pos.w} height={pos.h} rx="4"
-                    fill="rgba(29,158,117,.05)" stroke="rgba(29,158,117,.2)" strokeWidth="0.5"/>
+              {Object.entries(REGIONS).map(([name,pos])=>(
+                <g key={name} onClick={()=>drillRegion(name)} style={{cursor:'pointer'}}>
+                  <rect x={pos.x} y={pos.y} width={pos.w} height={pos.h} rx="4" fill="rgba(29,158,117,.05)" stroke="rgba(29,158,117,.2)" strokeWidth="0.5"/>
                   <text x={pos.x+pos.w/2} y={pos.y+pos.h/2-6} textAnchor="middle" fontSize="9" fill="rgba(29,158,117,.8)" fontFamily="system-ui">{name}</text>
                   <text x={pos.x+pos.w/2} y={pos.y+pos.h/2+7} textAnchor="middle" fontSize="8" fill="rgba(29,158,117,.5)" fontFamily="system-ui">{pos.signals} signals ›</text>
                 </g>
               ))}
 
-              {/* pulsing signal dots */}
-              {Object.entries(DOT_POSITIONS).map(([name,pos]) => (
-                <circle key={name} cx={pos.x} cy={pos.y} r="4" fill={G} opacity="0.8">
-                  <animate attributeName="r" values="3;6;3" dur={`${1.5+Math.random()}s`} repeatCount="indefinite"/>
-                  <animate attributeName="opacity" values="0.8;0.3;0.8" dur={`${1.5+Math.random()}s`} repeatCount="indefinite"/>
-                </circle>
+              {DOTS.map(dot=>(
+                <g key={dot.name}>
+                  <circle cx={dot.x} cy={dot.y} r="3" fill={G} opacity="0.5">
+                    <animate attributeName="r"       values="2;5;2"     dur={dot.dur} repeatCount="indefinite" begin={dot.dur}/>
+                    <animate attributeName="opacity" values="0.5;0.1;0.5" dur={dot.dur} repeatCount="indefinite" begin={dot.dur}/>
+                  </circle>
+                  <circle cx={dot.x} cy={dot.y} r="2.5" fill={G} opacity="0.9"/>
+                </g>
               ))}
 
-              <text x="52" y="260" fontSize="8" fill="rgba(242,242,240,.3)" fontFamily="system-ui">● live signals · click region to navigate · AR layer coming</text>
+              <text x="52" y="260" fontSize="8" fill="rgba(242,242,240,.3)" fontFamily="system-ui">● live signals · click region · AR layer → GeoBond</text>
             </svg>
           </div>
-          <div style={{ padding:'10px 14px', borderTop:'0.5px solid rgba(242,242,240,.08)', display:'flex', gap:'20px', flexWrap:'wrap' }}>
-            <span style={{ fontSize:'11px', color:'rgba(242,242,240,.6)' }}>🟢 <strong style={{ color:G }}>29</strong> signals today</span>
-            <span style={{ fontSize:'11px', color:'rgba(242,242,240,.6)' }}>📍 <strong>15</strong> cities tracked</span>
-            <span style={{ fontSize:'11px', color:'rgba(242,242,240,.6)' }}>📰 <strong>38</strong> local sources</span>
-            <span style={{ fontSize:'11px', color:'rgba(242,242,240,.4)', marginLeft:'auto', fontStyle:'italic' }}>AR · B2B banner layer → GeoBond</span>
+          <div style={{padding:'10px 14px',borderTop:'0.5px solid rgba(242,242,240,.08)',display:'flex',gap:'20px',flexWrap:'wrap'}}>
+            <span style={{fontSize:'11px',color:'rgba(242,242,240,.6)'}}>🟢 <strong style={{color:G}}>29</strong> signals today</span>
+            <span style={{fontSize:'11px',color:'rgba(242,242,240,.6)'}}>📍 <strong>15</strong> cities tracked</span>
+            <span style={{fontSize:'11px',color:'rgba(242,242,240,.6)'}}>📰 <strong>38</strong> local sources</span>
+            <span style={{fontSize:'11px',color:'rgba(242,242,240,.4)',marginLeft:'auto',fontStyle:'italic'}}>AR · B2B banner → GeoBond</span>
           </div>
         </div>
       )}
 
-      {/* LEVEL REGION — city list */}
-      {level === 'region' && (
-        <div style={{ border:'0.5px solid rgba(242,242,240,.1)', borderRadius:'12px', overflow:'hidden' }}>
-          <div style={{ padding:'12px 14px', borderBottom:'0.5px solid rgba(242,242,240,.08)' }}>
-            <div style={{ fontSize:'13px', fontWeight:500, marginBottom:'10px' }}>Select a city in {region}</div>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:'8px' }}>
-              {cities.map(c => (
-                <button key={c.name} onClick={()=>drillCity(c)} style={{ padding:'10px 12px', borderRadius:'10px', border:'0.5px solid rgba(242,242,240,.12)', background:'rgba(242,242,240,.03)', cursor:'pointer', fontFamily:'inherit', textAlign:'left' as const, transition:'all .15s' }}
-                  onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.borderColor='rgba(29,158,117,.4)';(e.currentTarget as HTMLButtonElement).style.background='rgba(29,158,117,.06)'}}
-                  onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.borderColor='rgba(242,242,240,.12)';(e.currentTarget as HTMLButtonElement).style.background='rgba(242,242,240,.03)'}}>
-                  <div style={{ display:'flex', alignItems:'center', gap:'7px', marginBottom:'5px' }}>
-                    <span style={{ width:'7px', height:'7px', borderRadius:'50%', background:G, display:'inline-block', flexShrink:0 }}/>
-                    <span style={{ fontSize:'13px', fontWeight:500, color:'#F2F2F0' }}>{c.name}, {c.state}</span>
+      {level==='region'&&(
+        <div style={{border:'0.5px solid rgba(242,242,240,.1)',borderRadius:'12px',overflow:'hidden'}}>
+          <div style={{padding:'12px 14px',borderBottom:'0.5px solid rgba(242,242,240,.08)'}}>
+            <div style={{fontSize:'13px',fontWeight:500,marginBottom:'10px'}}>Select a city in {region}</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:'8px'}}>
+              {cities.map(c=>(
+                <button key={c.name} onClick={()=>drillCity(c)} style={{padding:'10px 12px',borderRadius:'10px',border:'0.5px solid rgba(242,242,240,.12)',background:'rgba(242,242,240,.03)',cursor:'pointer',fontFamily:'inherit',textAlign:'left' as const}}>
+                  <div style={{display:'flex',alignItems:'center',gap:'7px',marginBottom:'4px'}}>
+                    <span style={{width:'7px',height:'7px',borderRadius:'50%',background:G,display:'inline-block',flexShrink:0}}/>
+                    <span style={{fontSize:'13px',fontWeight:500,color:'#F2F2F0'}}>{c.name}, {c.state}</span>
                   </div>
-                  <div style={{ fontSize:'11px', color:'rgba(242,242,240,.4)', paddingLeft:'14px' }}>{c.count} signal{c.count>1?'s':''} today · {c.sources[0]}</div>
+                  <div style={{fontSize:'11px',color:'rgba(242,242,240,.4)',paddingLeft:'14px'}}>{c.count} signal{c.count>1?'s':''} · {c.sources[0]}</div>
                 </button>
               ))}
             </div>
           </div>
-          <div style={{ padding:'10px 14px', fontSize:'11px', color:'rgba(242,242,240,.4)' }}>
+          <div style={{padding:'10px 14px',fontSize:'11px',color:'rgba(242,242,240,.4)'}}>
             Don't see your city?{' '}
-            <button onClick={()=>setShowAdd(true)} style={{ color:G, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit', fontSize:'11px' }}>+ add it →</button>
+            <button onClick={()=>setShowAdd(true)} style={{color:G,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontSize:'11px'}}>+ add it →</button>
           </div>
         </div>
       )}
 
-      {/* LEVEL CITY — signal feed */}
-      {level === 'city' && city && (
-        <div style={{ border:'0.5px solid rgba(242,242,240,.1)', borderRadius:'12px', overflow:'hidden' }}>
-          <div style={{ padding:'12px 14px', borderBottom:'0.5px solid rgba(242,242,240,.08)', display:'flex', alignItems:'center', gap:'10px', flexWrap:'wrap' }}>
-            <div style={{ width:'8px', height:'8px', borderRadius:'50%', background:G, flexShrink:0 }}/>
-            <span style={{ fontSize:'13px', fontWeight:500, color:G }}>{city.name}, {city.state}</span>
-            <span style={{ fontSize:'11px', color:'rgba(242,242,240,.4)' }}>· {city.count} signals today</span>
-            <span style={{ fontSize:'10px', color:'rgba(242,242,240,.3)', marginLeft:'auto' }}>{city.sources.join(' · ')}</span>
+      {level==='city'&&city&&(
+        <div style={{border:'0.5px solid rgba(242,242,240,.1)',borderRadius:'12px',overflow:'hidden'}}>
+          <div style={{padding:'12px 14px',borderBottom:'0.5px solid rgba(242,242,240,.08)',display:'flex',alignItems:'center',gap:'10px',flexWrap:'wrap'}}>
+            <div style={{width:'8px',height:'8px',borderRadius:'50%',background:G,flexShrink:0}}/>
+            <span style={{fontSize:'13px',fontWeight:500,color:G}}>{city.name}, {city.state}</span>
+            <span style={{fontSize:'11px',color:'rgba(242,242,240,.4)'}}>· {city.count} signals today</span>
+            <span style={{fontSize:'10px',color:'rgba(242,242,240,.3)',marginLeft:'auto'}}>{city.sources.join(' · ')}</span>
           </div>
-
-          <div style={{ padding:'5px 14px 0', ...eb, paddingTop:'7px' }}>
-            <div style={{ display:'grid', gridTemplateColumns:'22px minmax(0,1fr) 44px', gap:'8px' }}>
-              <div/><div>Signal · source · date</div><div style={{ textAlign:'center' }}>Z</div>
+          <div style={{padding:'5px 14px 0',...eb,paddingTop:'7px'}}>
+            <div style={{display:'grid',gridTemplateColumns:'22px minmax(0,1fr) 44px',gap:'8px'}}>
+              <div/><div>Signal · source · date</div><div style={{textAlign:'center'}}>Z</div>
             </div>
           </div>
-
-          {city.signals.map((s,i) => (
-            <div key={i} style={{ display:'grid', gridTemplateColumns:'22px minmax(0,1fr) 44px', gap:'8px', padding:'11px 14px', borderTop:'0.5px solid rgba(242,242,240,.08)', alignItems:'start' }}>
-              <div style={{ fontSize:'12px', fontWeight:600, color:G, paddingTop:'2px' }}>L{i+1}</div>
+          {city.signals.map((s,i)=>(
+            <div key={i} style={{display:'grid',gridTemplateColumns:'22px minmax(0,1fr) 44px',gap:'8px',padding:'11px 14px',borderTop:'0.5px solid rgba(242,242,240,.08)',alignItems:'start'}}>
+              <div style={{fontSize:'12px',fontWeight:600,color:G,paddingTop:'2px'}}>L{i+1}</div>
               <div>
-                <div style={{ fontFamily:'Georgia,serif', fontSize:'15px', lineHeight:1.4, color:'#F2F2F0' }}>{s.q}</div>
-                <div style={{ fontSize:'10px', color:'rgba(242,242,240,.35)', marginTop:'5px' }}>{s.src} · {s.date}</div>
+                <div style={{fontFamily:'Georgia,serif',fontSize:'15px',lineHeight:1.4,color:'#F2F2F0'}}>{s.q}</div>
+                <div style={{fontSize:'10px',color:'rgba(242,242,240,.35)',marginTop:'5px'}}>{s.src} · {s.date}</div>
               </div>
-              <div style={{ textAlign:'center' }}>
-                <span style={{ fontSize:'11px', fontWeight:500, padding:'2px 7px', borderRadius:'6px', background:'rgba(29,158,117,.12)', color:G }}>{s.z}</span>
+              <div style={{textAlign:'center'}}>
+                <span style={{fontSize:'11px',fontWeight:500,padding:'2px 7px',borderRadius:'6px',background:'rgba(29,158,117,.12)',color:G}}>{s.z}</span>
               </div>
             </div>
           ))}
-
-          <div style={{ padding:'10px 14px', borderTop:'0.5px solid rgba(242,242,240,.08)', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'8px' }}>
-            <span style={{ fontSize:'10px', color:'rgba(242,242,240,.3)' }}>
-              Z-Factored from {city.name} sources · AR banner layer → GeoBond B2B
-            </span>
-            <button onClick={backToRegion} style={{ fontSize:'11px', color:G, background:'none', border:'none', cursor:'pointer', fontFamily:'inherit' }}>
-              ← back to {region}
-            </button>
+          <div style={{padding:'10px 14px',borderTop:'0.5px solid rgba(242,242,240,.08)',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px'}}>
+            <span style={{fontSize:'10px',color:'rgba(242,242,240,.3)'}}>Z-Factored · AR banner layer → GeoBond B2B</span>
+            <button onClick={backToRegion} style={{fontSize:'11px',color:G,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit'}}>← back to {region}</button>
           </div>
         </div>
       )}
 
-      {/* add your city form */}
-      {showAdd && (
-        <div style={{ marginTop:'10px', border:`0.5px solid rgba(29,158,117,.3)`, borderRadius:'12px', padding:'16px', background:'rgba(29,158,117,.04)' }}>
-          <div style={{ fontSize:'13px', fontWeight:500, marginBottom:'12px' }}>Add your city or local source</div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px', marginBottom:'10px' }}>
-            <div>
-              <label style={{ ...eb, display:'block', marginBottom:'6px' }}>City name</label>
-              <input value={newCity} onChange={e=>setNewCity(e.target.value)} placeholder="e.g. Austin, TX" style={inp}/>
-            </div>
-            <div>
-              <label style={{ ...eb, display:'block', marginBottom:'6px' }}>News source URL</label>
-              <input value={newUrl} onChange={e=>setNewUrl(e.target.value)} placeholder="e.g. statesman.com" style={inp}/>
-            </div>
+      {showAdd&&(
+        <div style={{marginTop:'10px',border:`0.5px solid rgba(29,158,117,.3)`,borderRadius:'12px',padding:'16px',background:'rgba(29,158,117,.04)'}}>
+          <div style={{fontSize:'13px',fontWeight:500,marginBottom:'12px'}}>Add your city or local source</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'10px'}}>
+            <div><label style={{...eb,display:'block',marginBottom:'6px'}}>City name</label><input value={newCity} onChange={e=>setNewCity(e.target.value)} placeholder="e.g. Austin, TX" style={inp}/></div>
+            <div><label style={{...eb,display:'block',marginBottom:'6px'}}>News source URL</label><input value={newUrl} onChange={e=>setNewUrl(e.target.value)} placeholder="e.g. statesman.com" style={inp}/></div>
           </div>
-          <div style={{ display:'flex', gap:'8px' }}>
-            <button onClick={addSource} style={{ padding:'8px 16px', background:G, color:'#fff', border:'none', borderRadius:'8px', fontSize:'13px', cursor:'pointer', fontFamily:'inherit' }}>Add source →</button>
-            <button onClick={()=>setShowAdd(false)} style={{ padding:'8px 16px', background:'transparent', color:'rgba(242,242,240,.4)', border:'0.5px solid rgba(242,242,240,.15)', borderRadius:'8px', fontSize:'13px', cursor:'pointer', fontFamily:'inherit' }}>Cancel</button>
+          <div style={{display:'flex',gap:'8px'}}>
+            <button onClick={addSource} style={{padding:'8px 16px',background:G,color:'#fff',border:'none',borderRadius:'8px',fontSize:'13px',cursor:'pointer',fontFamily:'inherit'}}>Add source →</button>
+            <button onClick={()=>setShowAdd(false)} style={{padding:'8px 16px',background:'transparent',color:'rgba(242,242,240,.4)',border:'0.5px solid rgba(242,242,240,.15)',borderRadius:'8px',fontSize:'13px',cursor:'pointer',fontFamily:'inherit'}}>Cancel</button>
           </div>
-          <div style={{ fontSize:'11px', color:'rgba(242,242,240,.3)', marginTop:'8px' }}>Saved in your browser · no account · no tracking · pipeline adds Z-Factored signals within 24h</div>
+          <div style={{fontSize:'11px',color:'rgba(242,242,240,.3)',marginTop:'8px'}}>Browser only · no account · no tracking</div>
         </div>
       )}
 
-      {addedMsg && (
-        <div style={{ marginTop:'10px', padding:'10px 14px', borderRadius:'8px', background:'rgba(29,158,117,.1)', border:`0.5px solid rgba(29,158,117,.3)`, fontSize:'12px', color:G }}>{addedMsg}</div>
+      {addedMsg&&(
+        <div style={{marginTop:'10px',padding:'10px 14px',borderRadius:'8px',background:'rgba(29,158,117,.1)',border:`0.5px solid rgba(29,158,117,.3)`,fontSize:'12px',color:G}}>{addedMsg}</div>
       )}
 
     </section>
