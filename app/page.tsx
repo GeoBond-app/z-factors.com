@@ -1,4 +1,3 @@
-cat > app/page.tsx << 'ENDOFFILE'
 'use client';
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
@@ -234,4 +233,3 @@ export default function HomePage() {
     </main>
   );
 }
-ENDOFFILE
