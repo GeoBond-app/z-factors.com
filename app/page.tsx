@@ -1,4 +1,5 @@
 'use client';
+import GeoPortal from './_components/GeoPortal';
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
@@ -125,6 +126,9 @@ export default function HomePage() {
           </button>
         ))}
       </div>
+
+      {/* Local Portal */}
+      <GeoPortal />
 
       {/* Articles */}
       <div style={{ padding: '16px 20px' }}>
