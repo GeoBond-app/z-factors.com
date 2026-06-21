@@ -9,13 +9,13 @@ const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ? createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 ) : null;
 
-const T = '#1D9E75'; const A = '#BA7517'; const R = '#E24B4A'; const P = '#7F77DD'; const BD = 'rgba(128,128,128,0.15)';
+const T='#1D9E75';const A='#BA7517';const R='#E24B4A';const P='#7F77DD';const BD='rgba(128,128,128,0.15)';
 
-function slugify(str: string) { return (str||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').slice(0,80).replace(/-$/,''); }
+function slugify(str:string){return(str||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').slice(0,80).replace(/-$/,'');}
 function ZBadge({score}:{score:number}){const bg=score>=9.5?R:score>=9?T:score>=8?A:P;return(<span style={{fontSize:'11px',padding:'2px 8px',borderRadius:'3px',fontWeight:600,color:'#fff',background:bg,flexShrink:0}}>Z {score}</span>);}
 
-export default function ArticlePage() {
-  const params=useParams(); const slug=params?.slug as string;
+export default function ArticlePage(){
+  const params=useParams();const slug=params?.slug as string;
   const [article,setArticle]=useState<any>(null);
   const [related,setRelated]=useState<any[]>([]);
   const [archive,setArchive]=useState<any[]>([]);
@@ -40,8 +40,8 @@ export default function ArticlePage() {
     load();
   },[slug]);
 
-  if(loading) return <main style={{fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',padding:'20px',opacity:0.4,fontSize:'13px'}}>Loading signal...</main>;
-  if(!article) return <main style={{fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',padding:'20px'}}><Link href="/" style={{fontSize:'12px',opacity:0.5,textDecoration:'none',color:'inherit'}}>← Back</Link><div style={{marginTop:'20px',opacity:0.4}}>Signal not found.</div></main>;
+  if(loading)return<main style={{fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',padding:'20px',opacity:0.4,fontSize:'13px'}}>Loading signal...</main>;
+  if(!article)return<main style={{fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',padding:'20px'}}><Link href="/" style={{fontSize:'12px',opacity:0.5,textDecoration:'none',color:'inherit'}}>← Back</Link><div style={{marginTop:'20px',opacity:0.4}}>Signal not found.</div></main>;
 
   const hasViews=article.track2a_feeling&&article.track2b_question;
   const formatType=hasViews?'A':'B';
@@ -54,7 +54,7 @@ export default function ArticlePage() {
     </button>
   );
 
-  return (
+  return(
     <main style={{minHeight:'100vh',fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',fontSize:'12px'}}>
 
       <header style={{padding:'8px 16px',borderBottom:`0.5px solid ${BD}`,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
@@ -68,7 +68,6 @@ export default function ArticlePage() {
 
       <div style={{display:'grid',gridTemplateColumns:'1fr 280px',minHeight:'calc(100vh - 50px)'}}>
 
-        {/* LEFT 70% */}
         <div style={{borderRight:`0.5px solid ${BD}`,padding:'20px 24px'}}>
 
           <div style={{paddingBottom:'14px',borderBottom:`0.5px solid ${BD}`,marginBottom:'16px'}}>
@@ -95,7 +94,6 @@ export default function ArticlePage() {
               {paras.map((p,i)=><p key={i} style={{fontSize:'15px',lineHeight:1.85,marginBottom:'16px',opacity:0.85}}>{p}</p>)}
               {paras.length===0&&article.subheadline&&<p style={{fontSize:'15px',lineHeight:1.85,marginBottom:'16px',opacity:0.85}}>{article.subheadline}</p>}
               <div style={{height:'0.5px',background:BD,margin:'20px 0'}}/>
-
               {formatType==='A'&&(
                 <>
                   <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1.5px',color:T,fontWeight:600,marginBottom:'12px',opacity:0.7}}>Two views</div>
@@ -111,14 +109,12 @@ export default function ArticlePage() {
                   </div>
                 </>
               )}
-
               {formatType==='B'&&(article.teaser_question||article.track2b_question)&&(
                 <>
                   <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1.5px',color:T,fontWeight:600,marginBottom:'12px',opacity:0.7}}>The question</div>
                   <div style={{fontSize:'16px',fontStyle:'italic',borderLeft:`3px solid ${T}`,paddingLeft:'14px',lineHeight:1.7,opacity:0.85,marginBottom:'20px'}}>{article.teaser_question||article.track2b_question}</div>
                 </>
               )}
-
               <div style={{height:'0.5px',background:BD,margin:'20px 0'}}/>
               <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'6px'}}>
                 <div style={{flex:1,height:'4px',background:'rgba(128,128,128,0.1)',borderRadius:'2px',overflow:'hidden'}}>
@@ -127,7 +123,6 @@ export default function ArticlePage() {
                 <ZBadge score={article.z_factor_score}/>
               </div>
               <div style={{fontSize:'11px',opacity:0.4,marginBottom:'20px'}}>Z-score measures meaning. Not certainty.</div>
-
               {article.key_entities?.length>0&&(
                 <div style={{display:'flex',flexWrap:'wrap',gap:'5px',marginBottom:'16px'}}>
                   {(article.key_entities as string[]).map((e,i)=>(
@@ -135,7 +130,6 @@ export default function ArticlePage() {
                   ))}
                 </div>
               )}
-
               <div style={{padding:'12px 14px',border:`0.5px solid ${BD}`,borderRadius:'6px',background:'rgba(128,128,128,0.03)',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px',marginTop:'8px'}}>
                 <div style={{fontSize:'11px',opacity:0.6}}>Full intelligence report available on z-factoring.com</div>
                 <a href="https://z-factoring.com" style={{fontSize:'11px',padding:'5px 12px',border:`0.5px solid ${P}`,borderRadius:'4px',color:P,textDecoration:'none'}}>Government intelligence →</a>
@@ -182,8 +176,7 @@ export default function ArticlePage() {
 
         </div>
 
-        {/* RIGHT SIDEBAR 30% — STICKY */}
-        <div style={{position:'sticky',top:0,height:'100vh',overflowY:'auto',fontSize:'11px'}}>
+        <div style={{position:'sticky',top:0,height:'100vh',overflowY:'auto',fontSize:'11px',borderLeft:`0.5px solid ${BD}`}}>
 
           <div style={{padding:'8px 10px',borderBottom:`0.5px solid ${BD}`}}>
             <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1.2px',opacity:0.5,fontWeight:600,marginBottom:'6px'}}>Signal leaderboard</div>
@@ -198,8 +191,8 @@ export default function ArticlePage() {
             ))}
           </div>
 
-          <div style={{height:'100px',borderBottom:`0.5px solid ${BD}`,background:'rgba(128,128,128,0.03)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-            <span style={{fontSize:'10px',opacity:0.3,border:`0.5px dashed ${BD}`,padding:'4px 12px',borderRadius:'4px',textAlign:'center'}}>300×250{'\n'}GeoBond B2B</span>
+          <div style={{height:'100px',borderBottom:`0.5px solid ${BD}`,background:'rgba(128,128,128,0.03)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            <span style={{fontSize:'10px',opacity:0.3,border:`0.5px dashed ${BD}`,padding:'8px 12px',borderRadius:'4px',textAlign:'center'}}>300×250<br/>GeoBond B2B</span>
           </div>
 
           {related.length>0&&(
