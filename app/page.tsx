@@ -46,16 +46,15 @@ export default function HomePage(){
       <style>{`
         .zf-grid{display:grid;grid-template-columns:1fr 190px}
         .zf-sidebar{display:block;font-size:11px;border-left:0.5px solid rgba(128,128,128,0.15);position:sticky;top:0;height:100vh;overflow-y:auto}
-        .zf-filter{display:flex;gap:5px;flex-wrap:wrap;padding:6px 14px;border-bottom:0.5px solid rgba(128,128,128,0.15);background:rgba(128,128,128,0.03)}
+        .zf-filter{display:flex;gap:5px;padding:6px 14px;border-bottom:0.5px solid rgba(128,128,128,0.15);background:rgba(128,128,128,0.03);overflow-x:auto;scrollbar-width:none}
         .zf-ticker{padding:5px 16px;display:flex;gap:12px;align-items:center;overflow-x:auto;scrollbar-width:none;border-bottom:0.5px solid rgba(128,128,128,0.15)}
         @media(max-width:768px){
           .zf-grid{grid-template-columns:1fr}
           .zf-sidebar{display:none}
-          .zf-filter{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
         }
       `}</style>
 
-      <header style={{padding:'8px 16px',borderBottom:`0.5px solid ${BD}`,display:'flex',justifyContent:'space-between',alignItems:'center',position:'sticky',top:0,zIndex:50,background:'var(--background, #fff)'}}>
+      <header style={{padding:'8px 16px',borderBottom:`0.5px solid ${BD}`,display:'flex',justifyContent:'space-between',alignItems:'center',position:'sticky',top:0,zIndex:50,background:'var(--background,#fff)'}}>
         <div><div style={{fontSize:'16px',fontWeight:600,letterSpacing:'-0.3px'}}>Z-Factors</div><div style={{fontSize:'9px',opacity:0.5}}>The score behind every story.</div></div>
         <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
           <Link href="/archive" style={{fontSize:'10px',opacity:0.5,textDecoration:'none',color:'inherit'}}>Archive</Link>
@@ -65,7 +64,7 @@ export default function HomePage(){
       </header>
 
       <div style={{padding:'4px 16px',borderBottom:`0.5px solid ${BD}`,background:'rgba(128,128,128,0.04)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:'10px',opacity:0.5,fontStyle:'italic'}}>We read the world's signals so you don't have to.</span>
+        <span style={{fontSize:'10px',opacity:0.5,fontStyle:'italic'}}>We read the world's signals so you don't have to. We summarize. We score. You decide.</span>
         <span style={{fontSize:'9px',color:T}}>Daily</span>
       </div>
 
@@ -91,7 +90,7 @@ export default function HomePage(){
           </div>
 
           <div style={{padding:'7px 14px',borderBottom:`0.5px solid ${BD}`,borderLeft:`3px solid ${T}`,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-            <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
               <span style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1.2px',opacity:0.5,fontWeight:600}}>§1 · Top signals</span>
               <span style={{fontSize:'10px',color:T,fontWeight:500}}>· {city}</span>
             </div>
@@ -99,36 +98,50 @@ export default function HomePage(){
           </div>
 
           {loading&&<div style={{padding:'20px 14px',opacity:0.4,fontSize:'13px'}}>Loading signals...</div>}
-          {!loading&&filtered.length===0&&<div style={{padding:'20px 14px',opacity:0.4,fontSize:'13px'}}>No signals yet — check back soon.</div>}
+          {!loading&&filtered.length===0&&<div style={{padding:'20px 14px',opacity:0.4,fontSize:'13px'}}>No signals yet.</div>}
 
           {filtered.slice(0,10).map((a,i)=>(
-            <div key={a.id||i} style={{padding:'12px 14px',borderBottom:`0.5px solid ${BD}`}}>
-              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'4px',flexWrap:'wrap'}}>
+            <div key={a.id||i} style={{padding:'14px 14px',borderBottom:`0.5px solid ${BD}`}}>
+
+              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px',flexWrap:'wrap'}}>
                 <span style={{color:T,fontSize:'10px',fontWeight:600}}>#{i+1}</span>
                 <ZBadge score={a.z_factor_score}/>
                 {a.original_source&&<span style={{fontSize:'10px',opacity:0.5}}>{a.original_source}</span>}
                 <span style={{fontSize:'10px',opacity:0.4,marginLeft:'auto'}}>{a.publish_date}</span>
               </div>
+
               <Link href={`/article/${slugify(a.headline)}`} style={{textDecoration:'none',color:'inherit'}}>
-                <div style={{fontSize:'14px',fontWeight:500,lineHeight:1.4,marginBottom:'5px'}}>{a.headline}</div>
+                <div style={{fontSize:'15px',fontWeight:500,lineHeight:1.4,marginBottom:'6px'}}>{a.headline}</div>
               </Link>
-              {a.subheadline&&<div style={{fontSize:'12px',opacity:0.6,lineHeight:1.6,marginBottom:'5px'}}>{a.subheadline}</div>}
-              {a.track2a_feeling&&a.track2b_question&&(
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'5px',marginBottom:'6px'}}>
-                  <div style={{background:'rgba(29,158,117,0.08)',borderRadius:'4px',padding:'5px 8px',fontSize:'11px'}}>
-                    <div style={{fontSize:'10px',fontWeight:500,color:T,marginBottom:'2px'}}>Who benefits</div>
-                    <div style={{opacity:0.7,lineHeight:1.5}}>{a.track2a_feeling}</div>
-                  </div>
-                  <div style={{background:'rgba(226,75,74,0.08)',borderRadius:'4px',padding:'5px 8px',fontSize:'11px'}}>
-                    <div style={{fontSize:'10px',fontWeight:500,color:R,marginBottom:'2px'}}>Who loses</div>
-                    <div style={{opacity:0.7,lineHeight:1.5}}>{a.track2b_question}</div>
-                  </div>
+
+              {a.subheadline&&(
+                <div style={{fontSize:'12px',opacity:0.6,lineHeight:1.6,marginBottom:'10px'}}>{a.subheadline}</div>
+              )}
+
+              {a.track2a_feeling&&(
+                <div style={{borderLeft:`2px solid ${T}`,paddingLeft:'10px',marginBottom:'10px'}}>
+                  <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px',color:T,fontWeight:600,marginBottom:'4px',opacity:0.7}}>Our insight</div>
+                  <div style={{fontSize:'12px',lineHeight:1.75,opacity:0.85}}>{a.track2a_feeling}</div>
                 </div>
               )}
-              {a.teaser_question&&!a.track2a_feeling&&<div style={{fontSize:'11px',fontStyle:'italic',borderLeft:`2px solid ${T}`,paddingLeft:'8px',opacity:0.7,lineHeight:1.5,marginBottom:'5px'}}>{a.teaser_question}</div>}
-              <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap'}}>
-                {a.sub_tag&&<span style={{fontSize:'9px',padding:'1px 6px',border:`0.5px solid ${BD}`,borderRadius:'10px',opacity:0.6}}>{a.sub_tag}</span>}
-                {a.series&&<span style={{fontSize:'9px',padding:'1px 6px',border:`0.5px solid ${BD}`,borderRadius:'10px',opacity:0.6}}>{a.series}</span>}
+
+              {a.track2b_question&&(
+                <div style={{borderLeft:`2px solid rgba(128,128,128,0.25)`,paddingLeft:'10px',marginBottom:'8px'}}>
+                  <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px',opacity:0.4,fontWeight:600,marginBottom:'4px'}}>The question</div>
+                  <div style={{fontSize:'12px',fontStyle:'italic',lineHeight:1.75,opacity:0.75}}>{a.track2b_question}</div>
+                </div>
+              )}
+
+              {a.teaser_question&&!a.track2a_feeling&&(
+                <div style={{borderLeft:`2px solid rgba(128,128,128,0.25)`,paddingLeft:'10px',marginBottom:'8px'}}>
+                  <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px',opacity:0.4,fontWeight:600,marginBottom:'4px'}}>The question</div>
+                  <div style={{fontSize:'12px',fontStyle:'italic',lineHeight:1.75,opacity:0.75}}>{a.teaser_question}</div>
+                </div>
+              )}
+
+              <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap',marginTop:'4px'}}>
+                {a.sub_tag&&<span style={{fontSize:'9px',padding:'1px 6px',border:`0.5px solid ${BD}`,borderRadius:'10px',opacity:0.5}}>{a.sub_tag}</span>}
+                {a.series&&<span style={{fontSize:'9px',padding:'1px 6px',border:`0.5px solid ${BD}`,borderRadius:'10px',opacity:0.5}}>{a.series}</span>}
                 <Link href={`/article/${slugify(a.headline)}`} style={{fontSize:'10px',color:T,textDecoration:'none',marginLeft:'auto'}}>Read full signal →</Link>
               </div>
             </div>
@@ -169,12 +182,14 @@ export default function HomePage(){
             <span style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1.2px',opacity:0.5,fontWeight:600}}>§4 · Z-Factors editorial</span>
             <div style={{display:'flex',gap:'4px'}}>{['Suppressed','Pattern','Classified'].map(t=><span key={t} style={{fontSize:'9px',padding:'1px 6px',border:`0.5px solid ${BD}`,borderRadius:'10px',opacity:0.5}}>{t}</span>)}</div>
           </div>
-          <div style={{padding:'10px 14px',borderBottom:`0.5px solid ${BD}`,display:'grid',gap:'8px'}}>
+          <div style={{padding:'10px 14px',borderBottom:`0.5px solid ${BD}`,display:'grid',gap:'10px'}}>
             {articles.filter(a=>a.z_factor_score>=9.5).slice(0,3).map((a,i)=>(
               <Link key={i} href={`/article/${slugify(a.headline)}`} style={{textDecoration:'none',color:'inherit',display:'flex',gap:'8px',alignItems:'flex-start'}}>
                 <ZBadge score={a.z_factor_score}/>
-                <div><div style={{fontSize:'12px',fontWeight:500,marginBottom:'3px'}}>{a.headline}</div>
-                {a.teaser_question&&<div style={{fontSize:'11px',opacity:0.6,fontStyle:'italic',borderLeft:`2px solid ${R}`,paddingLeft:'6px'}}>{a.teaser_question}</div>}</div>
+                <div>
+                  <div style={{fontSize:'12px',fontWeight:500,marginBottom:'4px'}}>{a.headline}</div>
+                  {a.track2b_question&&<div style={{fontSize:'11px',fontStyle:'italic',opacity:0.6,lineHeight:1.6}}>{a.track2b_question}</div>}
+                </div>
               </Link>
             ))}
             {articles.filter(a=>a.z_factor_score>=9.5).length===0&&<div style={{fontSize:'11px',opacity:0.4}}>Editorial signals loading…</div>}
