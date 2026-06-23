@@ -15,7 +15,7 @@ const W_REPORTS=[{id:'W1',title:'Water Crisis Report',updated:'Jun 20',live:true
 function slugify(str:string){return(str||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').slice(0,80).replace(/-$/,'');}
 function ZBadge({score}:{score:number}){const bg=score>=9.5?R:score>=9?T:score>=8?A:P;return(<span style={{fontSize:'10px',padding:'1px 6px',borderRadius:'3px',fontWeight:600,color:'#fff',background:bg,flexShrink:0}}>Z {score}</span>);}
 
-interface Article{id:string;headline:string;subheadline:string;publish_date:string;z_factor_score:number;teaser_question:string;track2a_feeling:string;track2b_question:string;original_source:string;series:string;sub_tag:string;status:string;}
+interface Article{id:string;headline:string;subheadline:string;publish_date:string;z_factor_score:number;teaser_question:string;track2a_feeling:string;track2b_question:string;track:any;original_source:string;series:string;sub_tag:string;status:string;}
 
 export default function HomePage(){
   const [articles,setArticles]=useState<Article[]>([]);
