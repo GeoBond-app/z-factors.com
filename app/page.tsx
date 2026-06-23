@@ -44,8 +44,8 @@ export default function HomePage(){
   return(
     <main style={{minHeight:'100vh',fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',fontSize:'13px'}}>
       <style>{`
-        .zf-grid{display:grid;grid-template-columns:1fr 240px}
-        .zf-sidebar{display:block;font-size:11px;border-left:0.5px solid rgba(128,128,128,0.15);position:sticky;top:0;height:100vh;overflow-y:auto}
+        .zf-grid{display:grid;grid-template-columns:1fr 300px}
+        .zf-sidebar{display:block;font-size:13px;border-left:0.5px solid rgba(128,128,128,0.15);position:sticky;top:0;height:100vh;overflow-y:auto}
         .zf-filter{display:flex;gap:5px;padding:6px 14px;border-bottom:0.5px solid rgba(128,128,128,0.15);background:rgba(128,128,128,0.03);overflow-x:auto;scrollbar-width:none}
         .zf-ticker{padding:5px 16px;display:flex;gap:12px;align-items:center;overflow-x:auto;scrollbar-width:none;border-bottom:0.5px solid rgba(128,128,128,0.15)}
         @media(max-width:768px){
@@ -111,31 +111,31 @@ export default function HomePage(){
               </div>
 
               <Link href={`/article/${slugify(a.headline)}`} style={{textDecoration:'none',color:'inherit'}}>
-                <div style={{fontSize:'15px',fontWeight:500,lineHeight:1.4,marginBottom:'6px'}}>{a.headline}</div>
+                <div style={{fontSize:'18px',fontWeight:500,lineHeight:1.35,marginBottom:'6px'}}>{a.headline}</div>
               </Link>
 
               {a.subheadline&&(
-                <div style={{fontSize:'12px',opacity:0.6,lineHeight:1.6,marginBottom:'10px'}}>{a.subheadline}</div>
+                <div style={{fontSize:'13px',opacity:0.6,lineHeight:1.65,marginBottom:'10px'}}>{a.subheadline}</div>
               )}
 
               {a.track2a_feeling&&(
                 <div style={{borderLeft:`2px solid ${T}`,paddingLeft:'10px',marginBottom:'10px'}}>
                   <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px',color:T,fontWeight:600,marginBottom:'4px',opacity:0.7}}>Our insight</div>
-                  <div style={{fontSize:'12px',lineHeight:1.75,opacity:0.85}}>{a.track2a_feeling}</div>
+                  <div style={{fontSize:'13px',lineHeight:1.8,opacity:0.85}}>{a.track2a_feeling}</div>
                 </div>
               )}
 
               {a.track2b_question&&(
                 <div style={{borderLeft:`2px solid rgba(128,128,128,0.25)`,paddingLeft:'10px',marginBottom:'8px'}}>
                   <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px',opacity:0.4,fontWeight:600,marginBottom:'4px'}}>The question</div>
-                  <div style={{fontSize:'12px',fontStyle:'italic',lineHeight:1.75,opacity:0.75}}>{a.track2b_question}</div>
+                  <div style={{fontSize:'13px',fontStyle:'italic',lineHeight:1.8,opacity:0.75}}>{a.track2b_question}</div>
                 </div>
               )}
 
               {a.teaser_question&&!a.track2a_feeling&&(
                 <div style={{borderLeft:`2px solid rgba(128,128,128,0.25)`,paddingLeft:'10px',marginBottom:'8px'}}>
                   <div style={{fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px',opacity:0.4,fontWeight:600,marginBottom:'4px'}}>The question</div>
-                  <div style={{fontSize:'12px',fontStyle:'italic',lineHeight:1.75,opacity:0.75}}>{a.teaser_question}</div>
+                  <div style={{fontSize:'13px',fontStyle:'italic',lineHeight:1.8,opacity:0.75}}>{a.teaser_question}</div>
                 </div>
               )}
 
