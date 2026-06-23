@@ -44,7 +44,7 @@ export default function HomePage(){
   return(
     <main style={{minHeight:'100vh',fontFamily:'var(--font-geist-sans,system-ui,sans-serif)',fontSize:'13px'}}>
       <style>{`
-        .zf-grid{display:grid;grid-template-columns:1fr 190px}
+        .zf-grid{display:grid;grid-template-columns:1fr 240px}
         .zf-sidebar{display:block;font-size:11px;border-left:0.5px solid rgba(128,128,128,0.15);position:sticky;top:0;height:100vh;overflow-y:auto}
         .zf-filter{display:flex;gap:5px;padding:6px 14px;border-bottom:0.5px solid rgba(128,128,128,0.15);background:rgba(128,128,128,0.03);overflow-x:auto;scrollbar-width:none}
         .zf-ticker{padding:5px 16px;display:flex;gap:12px;align-items:center;overflow-x:auto;scrollbar-width:none;border-bottom:0.5px solid rgba(128,128,128,0.15)}
