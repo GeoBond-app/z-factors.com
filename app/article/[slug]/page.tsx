@@ -11,7 +11,7 @@ const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ? createClient(
 
 const T='#1D9E75';const A='#BA7517';const R='#E24B4A';const P='#7F77DD';const BD='rgba(128,128,128,0.15)';
 
-function slugify(str:string){return(str||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').slice(0,80).replace(/-$/,'');}
+function slugify(str:string){return(str||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').slice(0,200).replace(/-$/,'');}
 function ZBadge({score}:{score:number}){const bg=score>=9.5?R:score>=9?T:score>=8?A:P;return(<span style={{fontSize:'11px',padding:'2px 8px',borderRadius:'3px',fontWeight:600,color:'#fff',background:bg,flexShrink:0}}>Z {score}</span>);}
 
 export default function ArticlePage(){
@@ -26,7 +26,7 @@ export default function ArticlePage(){
   useEffect(()=>{
     async function load(){
       if(!supabase){setLoading(false);return;}
-      const{data}=await supabase.from('articles').select('*').eq('status','published').order('z_factor_score',{ascending:false}).limit(100);
+      const{data}=await supabase.from('articles').select('*').eq('status','live').order('z_factor_score',{ascending:false}).limit(100);
       const all=data||[];
       setTop5(all.slice(0,5));
       const match=all.find((a:any)=>slugify(a.headline)===slug);
