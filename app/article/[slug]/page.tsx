@@ -26,7 +26,7 @@ export default function ArticlePage(){
   useEffect(()=>{
     async function load(){
       if(!supabase){setLoading(false);return;}
-      const{data}=await supabase.from('articles').select('*').eq('status','published').order('z_factor_score',{ascending:false}).limit(100);
+      const{data}=await supabase.from('articles').select('*').order('z_factor_score',{ascending:false}).limit(100);
       const all=data||[];
       setTop5(all.slice(0,5));
       const match=all.find((a:any)=>slugify(a.headline)===slug);
